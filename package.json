@@ -1,0 +1,27 @@
+{
+  "name": "deps-scout",
+  "version": "0.0.1",
+  "description": "This package is intended to provide some insights into the maintainability of a project. By reviewing the chain of dependencies it can pinpoint which ones are at risk of being deprecated or abandoned.",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FreddyMartinez/deps-scout.git"
+  },
+  "keywords": [
+    "Dependencies",
+    "inspector"
+  ],
+  "author": "Freddy Martínez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FreddyMartinez/deps-scout/issues"
+  },
+  "homepage": "https://github.com/FreddyMartinez/deps-scout#readme",
+  "devDependencies": {
+    "@types/node": "^20.11.16",
+    "typescript": "^5.3.3"
+  }
+}
