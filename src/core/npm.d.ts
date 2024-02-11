@@ -5,6 +5,13 @@ type npmTime = {
 
 type repositoryType = "git";
 
+type npmDownloads = {
+  downloads: number;
+  start: string;
+  end: string;
+  package: string;
+};
+
 type npmData = {
   _id: string;
   _rev: string;
