@@ -2,9 +2,12 @@
   "name": "deps-scout",
   "version": "0.0.1",
   "description": "This package is intended to provide some insights into the maintainability of a project. By reviewing the chain of dependencies it can pinpoint which ones are at risk of being deprecated or abandoned.",
-  "main": "index.js",
+  "main": "bin/scout",
   "scripts": {
     "build": "tsc"
+  },
+  "bin": {
+    "scout": "./bin/scout"
   },
   "repository": {
     "type": "git",
