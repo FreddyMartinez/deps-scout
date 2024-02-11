@@ -1,0 +1,6 @@
+node_modules
+src
+
+# Ignore docs along with any files or directories starting with a dot
+CONTRIBUTING.md
+.*
