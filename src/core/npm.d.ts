@@ -1,29 +1,29 @@
-type npmTime = {
+type NpmTime = {
   modified: string;
   created: string;
 } & Record<string, string>;
 
-type repositoryType = "git";
+type RepositoryType = "git";
 
-type npmDownloads = {
+type NpmDownloads = {
   downloads: number;
   start: string;
   end: string;
   package: string;
 };
 
-type npmData = {
+type NpmData = {
   _id: string;
   _rev: string;
   name: string;
-  time: npmTime;
+  time: NpmTime;
   versions: Array<string>;
   maintainers: Array<string>;
   description: string;
   homepage: string;
   keywords: Array<string>;
   repository: {
-    type: repositoryType;
+    type: RepositoryType;
     url: string;
   };
   bugs: {

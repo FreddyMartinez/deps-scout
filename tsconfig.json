@@ -5,6 +5,7 @@
     "outDir": "dist",
     "rootDir": "src",
     "moduleResolution": "NodeNext",
+    "useUnknownInCatchVariables": true,
   },
   "exclude": ["node_modules", "dist"]
 }
