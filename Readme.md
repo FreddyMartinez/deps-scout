@@ -6,14 +6,11 @@ This package is intended to provide some insights into the maintainability of a 
 
 ## Features
 
-To be defined...
-
+This tool queries the npm registry to gather statistical data about a single package or a list of dependencies. It explores the data in order to give some insights into their overall health and suitability for inclusion in a project.
 
 ## Usage
 
-To use the Dependency Scout, just install it using the `npm i dps-scout` command.
-
-Once installed...
+To use the Dependency Scout, you can install it globally using the `npm i -g deps-scout` command and then run the `scout` command in your project, or you can just run the `npx deps-scout` command directly.
 
 ## Contributing
 
