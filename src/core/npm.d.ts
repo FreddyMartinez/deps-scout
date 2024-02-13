@@ -32,8 +32,6 @@ type NpmData = {
   author: string;
   users: unknown;
   license: string;
-  _cached: true;
-  _contentLength: number;
   version: string;
   main: string;
   module: string;
