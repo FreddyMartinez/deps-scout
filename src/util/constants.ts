@@ -1,6 +1,6 @@
 export const npmDownloadsBaseUrl =
   "https://api.npmjs.org/downloads/point/last-week/";
-
+export const githubReposUrl = "https://api.github.com/repos/";
 export const githubUrlRegex = /github\.com\/([^\/]+)\/([^\/]+)\.git/;
 
 export const messages = {

@@ -1,8 +1,8 @@
 import { get } from "https";
 
-export function httpGet(url: string) {
+export function httpGet(url: string, headers?: Record<string, string>) {
   return new Promise<string>((resolve, reject) => {
-    get(url, (response) => {
+    get(url, { headers }, (response) => {
       let data = '';
 
       response.on('data', (chunk) => {
