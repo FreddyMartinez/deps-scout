@@ -1,6 +1,7 @@
 import { githubUrlRegex } from "../util/constants";
 
 export class Library {
+  // Atributes from npm
   name: string;
   owner: string;
   repo: string;
@@ -9,9 +10,12 @@ export class Library {
   lastReleaseDate: Date;
   lifeSpan: number;
   releaseFrequency: number;
-  numberOfOpenIssues: number;
-  starsInRepo: number;
-  forksInRepo: number;
+  // Atributes from github
+  repoOpenIssues: number;
+  repoStars: number;
+  repoForks: number;
+  repoObservers: number;
+  repoOwnerType: string;
 
   constructor(npmData: NpmData, npmDownloads: NpmDownloads) {
     this.name = npmData.name;
@@ -37,5 +41,13 @@ export class Library {
     this.lifeSpan =
       (Date.now() - createdDate.getTime()) / (1000 * 60 * 60 * 24);
     this.releaseFrequency = this.lifeSpan / this.numberOfVersions;
+  }
+
+  setRepoData(repoData: GitData) {
+    this.repoOpenIssues = repoData.open_issues_count || repoData.open_issues;
+    this.repoStars = repoData.stargazers_count || 0;
+    this.repoForks = repoData.forks_count || repoData.forks;
+    this.repoObservers = repoData.subscribers_count;
+    this.repoOwnerType = repoData.owner.type;
   }
 }

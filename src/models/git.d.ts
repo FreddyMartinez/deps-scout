@@ -1,9 +1,15 @@
+type RepoOwnerType = "User" | "Organization";
+
+type RepoOwner = {
+  type: RepoOwnerType;
+} & Record<string, unknown>;
+
 type GitData = {
   id: number;
   name: string;
   full_name: string;
   private: boolean;
-  owner: Record<string, unknown>;
+  owner: RepoOwner;
   html_url: string;
   description: string;
   fork: boolean;
