@@ -42,3 +42,20 @@ type GitData = {
   network_count: number;
   subscribers_count: number;
 };
+
+type GitCommunityProfile = {
+  health_percentage: number;
+  description: string;
+  documentation: string;
+  files: {
+    code_of_conduct: Record<string, unknown> | null;
+    code_of_conduct_file: Record<string, unknown> | null;
+    contributing: Record<string, unknown> | null;
+    issue_template: unknown | null;
+    pull_request_template: unknown | null;
+    license: Record<string, unknown>;
+    readme: Record<string, unknown>;
+  };
+  updated_at: string;
+  content_reports_enabled: false;
+};

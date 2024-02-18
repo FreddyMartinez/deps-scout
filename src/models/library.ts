@@ -16,6 +16,7 @@ export class Library {
   repoForks: number;
   repoObservers: number;
   repoOwnerType: string;
+  repoHealth: number;
 
   constructor(npmData: NpmData, npmDownloads: NpmDownloads) {
     this.name = npmData.name;
@@ -49,5 +50,9 @@ export class Library {
     this.repoForks = repoData.forks_count || repoData.forks;
     this.repoObservers = repoData.subscribers_count;
     this.repoOwnerType = repoData.owner.type;
+  }
+
+  setRepoProfile(repoProfile: GitCommunityProfile) {
+    this.repoHealth = repoProfile.health_percentage;
   }
 }

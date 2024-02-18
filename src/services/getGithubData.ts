@@ -26,7 +26,7 @@ const communityProfileUrl = (owner: string, repo: string) =>
 export async function getRepoCommunityProfile(owner: string, repo: string) {
   try {
     const gitData = await httpGet(communityProfileUrl(owner, repo), githubHeaders);
-    return JSON.parse(gitData) as NpmData;
+    return JSON.parse(gitData) as GitCommunityProfile;
   } catch (error) {
     logErrors(error);
   }
