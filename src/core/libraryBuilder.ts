@@ -4,7 +4,7 @@ import {
   getRepoCommunityProfile,
   getRepoData,
 } from "../services/getGithubData";
-import { logErrors } from "../util/utilityFunctions";
+import { isTypeOf, logErrors } from "../util/utilityFunctions";
 
 export async function buildLibraryInstance(lib: string) {
   const library = await builLibraryNpmData(lib);
@@ -35,7 +35,11 @@ export async function buildLibraryRepoData(library: Library) {
     getRepoData(library.repoOwner, library.name),
     getRepoCommunityProfile(library.repoOwner, library.name),
   ]);
-  if (repoData) {
+
+  if (isTypeOf<GithubExcededRateLimit>(repoData, "message")) {
+    console.log(`Error getting GitHub data: ${repoData.message}`);
+    return;
+  } else if (repoData) {
     library.setRepoData(repoData);
   }
   if (repoProfile) {

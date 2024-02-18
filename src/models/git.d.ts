@@ -59,3 +59,8 @@ type GitCommunityProfile = {
   updated_at: string;
   content_reports_enabled: false;
 };
+
+type GithubExcededRateLimit = {
+  message: string;
+  documentation_url: string;
+};

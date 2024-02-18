@@ -54,7 +54,7 @@ export class Library {
     this.repoStars = repoData.stargazers_count || 0;
     this.repoForks = repoData.forks_count || repoData.forks;
     this.repoObservers = repoData.subscribers_count;
-    this.repoOwnerType = repoData.owner.type;
+    this.repoOwnerType = repoData.owner?.type;
   }
 
   setRepoProfile(repoProfile: GitCommunityProfile) {

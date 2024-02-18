@@ -14,7 +14,7 @@ const repoUrl = (owner: string, repo: string) =>
 export async function getRepoData(owner: string, repo: string) {
   try {
     const gitData = await httpGet(repoUrl(owner, repo), githubHeaders);
-    return JSON.parse(gitData) as GitData;
+    return JSON.parse(gitData) as GitData | GithubExcededRateLimit;
   } catch (error) {
     logErrors(error);
   }
