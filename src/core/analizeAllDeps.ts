@@ -6,7 +6,7 @@ export async function analyzeAllDeps() {
     const dependencies = await getProjectDeps();
     const libNames = Object.keys(dependencies);
     const libInstances = await Promise.all(libNames.map(buildLibraryInstance));
-    console.log(libInstances);
+    console.table(libInstances);
   } catch (error) {
     if (error instanceof Error) console.error(error.message);
   }
