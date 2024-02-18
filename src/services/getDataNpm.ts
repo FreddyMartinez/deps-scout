@@ -1,6 +1,7 @@
 import { asyncExec } from "../util/asyncExec";
 import { npmDownloadsBaseUrl } from "../util/constants";
 import { httpGet } from "../util/httpGet";
+import { logErrors } from "../util/utilityFunctions";
 
 export async function getNpmData(libName: string) {
   try {
@@ -18,6 +19,6 @@ export async function getNpmDownloads(libName: string) {
     const downloads = await httpGet(npmDownloadsUrl(libName));
     return JSON.parse(downloads) as NpmDownloads;
   } catch (e) {
-    return { downloads: 0, start: "", end: "", package: libName };
+    logErrors(e);
   }
 }

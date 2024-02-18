@@ -1,16 +1,17 @@
 import { githubUrlRegex } from "../util/constants";
 
 export class Library {
-  // Atributes from npm
+  // Properties from npm
   name: string;
-  owner: string;
-  repo: string;
+  repoName: string;
+  repoOwner: string;
   numberOfVersions: number;
   weeklyDownloads: number;
-  lastReleaseDate: Date;
+  lastVersion: string;
+  lastVersionDate: Date;
   lifeSpan: number;
   releaseFrequency: number;
-  // Atributes from github
+  // Properties from github
   repoOpenIssues: number;
   repoStars: number;
   repoForks: number;
@@ -18,12 +19,12 @@ export class Library {
   repoOwnerType: string;
   repoHealth: number;
 
-  constructor(npmData: NpmData, npmDownloads: NpmDownloads) {
+  constructor(npmData: NpmData) {
     this.name = npmData.name;
-    this.weeklyDownloads = npmDownloads.downloads || 0;
     this.setOwnerAndRepo(npmData.repository.url);
     this.numberOfVersions = npmData.versions.length;
     this.setTimeRelatedAttributes(npmData.time);
+    this.lastVersion = npmData.version;
   }
 
   private setOwnerAndRepo(url: string) {
@@ -32,16 +33,20 @@ export class Library {
       console.log(`Error parsing url: ${url} for ${this.name}`);
       return;
     }
-    this.owner = match[1];
-    this.repo = match[2];
+    this.repoOwner = match[1];
+    this.repoName = match[2];
   }
 
   private setTimeRelatedAttributes(npmTime: NpmTime) {
     const createdDate = new Date(npmTime.created);
-    this.lastReleaseDate = new Date(npmTime.modified);
+    this.lastVersionDate = new Date(npmTime.modified);
     this.lifeSpan =
       (Date.now() - createdDate.getTime()) / (1000 * 60 * 60 * 24);
-    this.releaseFrequency = this.lifeSpan / this.numberOfVersions;
+    this.releaseFrequency = this.numberOfVersions / this.lifeSpan;
+  }
+
+  setDownloadsData(npmDownloads: NpmDownloads) {
+    this.weeklyDownloads = npmDownloads.downloads || 0;
   }
 
   setRepoData(repoData: GitData) {

@@ -9,7 +9,7 @@ import { logErrors } from "../util/utilityFunctions";
 export async function buildLibraryInstance(lib: string) {
   const library = await builLibraryNpmData(lib);
   if (!library) return;
-  if (library.repo && library.owner) {
+  if (library.repoName && library.repoOwner) {
     await buildLibraryRepoData(library);
   }
   return library;
@@ -22,7 +22,9 @@ export async function builLibraryNpmData(lib: string) {
       getNpmDownloads(lib),
     ]);
 
-    return new Library(npmData, npmDownloads);
+    const library = new Library(npmData);
+    if (npmDownloads) library.setDownloadsData(npmDownloads);
+    return library;
   } catch (error) {
     logErrors(error);
   }
@@ -30,8 +32,8 @@ export async function builLibraryNpmData(lib: string) {
 
 export async function buildLibraryRepoData(library: Library) {
   const [repoData, repoProfile] = await Promise.all([
-    getRepoData(library.owner, library.name),
-    getRepoCommunityProfile(library.owner, library.name),
+    getRepoData(library.repoOwner, library.name),
+    getRepoCommunityProfile(library.repoOwner, library.name),
   ]);
   if (repoData) {
     library.setRepoData(repoData);
