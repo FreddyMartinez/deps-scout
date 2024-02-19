@@ -1,10 +1,12 @@
-import { analyzeAllDeps, analyzeLibrary } from "./core";
+import { analyzeAllDeps, analyzeOneLibrary } from "./core";
 import { argv } from "process";
 
 async function scanDeps() {
   if(argv.length > 2) {
     const dependecy = argv[2];
-    analyzeLibrary(dependecy);
+    const depVersion = argv[3];
+
+    analyzeOneLibrary(dependecy, depVersion);
     return;
   }
   analyzeAllDeps();
