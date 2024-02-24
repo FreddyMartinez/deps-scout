@@ -1,4 +1,4 @@
-import { buildLibraryInstance } from ".";
+import { libraryBuilder } from "./libraryBuilder";
 import { Library } from "../models/library";
 import {
   timeBetweenReleasesMessage,
@@ -13,7 +13,7 @@ import {
 } from "../util/utilityFunctions";
 
 export async function analyzeOneLibrary(lib: string, version?: string) {
-  const libInstance = await buildLibraryInstance(lib);
+  const libInstance = await libraryBuilder.buildLibraryInstance(lib);
 
   if (!libInstance) return;
   analyzeLibrary(libInstance, version);
