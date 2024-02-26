@@ -24,10 +24,12 @@ export const wasReleasedInLastThreeMonths: Indicator = {
 
 export const isReleasedFrequently: Indicator = {
   name: IS_RELEASED_FREQUENTLY,
-  expression: (lastVersionDate: Date) => {
-    const timeSinceLastRelease =
-    (Date.now() - lastVersionDate.getTime()) / MILLISECONDS_IN_DAY;
-    return timeSinceLastRelease < 30 ? IndicatorResult.OK : IndicatorResult.WARNING;
+  expression: (releaseFrequency: number) => {
+    return releaseFrequency > 0.3
+      ? IndicatorResult.OK
+      : releaseFrequency < 0.1
+      ? IndicatorResult.ALERT
+      : IndicatorResult.WARNING;
   },
   message: "The lirary is not released frequently.",
 }
