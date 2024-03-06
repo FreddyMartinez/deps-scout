@@ -1,5 +1,6 @@
 import { printRed, printYellow } from "../../util/utilityFunctions";
-import { Indicator, IndicatorResult } from "./indicator.types";
+import { ExecutionContext } from "../ctx/executionContext";
+import { Indicator, IndicatorStatus } from "./indicator.types";
 import { isReleasedFrequently, wasReleasedInLastThreeMonths, wasReleasedInLastYear } from "./releaseIndicators";
 import {
   isLastVersionIndicator,
@@ -7,38 +8,45 @@ import {
   isSameMinorVersionIndicator,
 } from "./versionIndicators";
 
-class IndicatorsRegistry {
+export class IndicatorsRegistry {
   private indicators = new Map<string, Indicator>();
+  private ctx: ExecutionContext;
+
+  constructor(ctx: ExecutionContext) {
+    this.ctx = ctx;
+  }
 
   register(indicator: Indicator) {
     this.indicators.set(indicator.name, indicator);
   }
 
-  evaluateIndicator(name: string, ...params: unknown[]) {
+  evaluateIndicator(name: string) {
     const indicator = this.indicators.get(name);
     if (!indicator) return;
-    return indicator.expression(...params);
+    return indicator.evaluate(this.ctx.library);
   }
 
-  printIndicatorMessage(name: string, result: IndicatorResult) {
+  printIndicatorMessage(name: string, result: IndicatorStatus) {
     const indicator = this.indicators.get(name);
     if (!indicator) return;
-    if(result === IndicatorResult.WARNING) {
+    if(result === IndicatorStatus.WARNING) {
       printYellow(indicator.message);
       return;
     }
-    if(result === IndicatorResult.ALERT) {
+    if(result === IndicatorStatus.ALERT) {
       printRed(indicator.message);
     }
   }
 }
 
-const registry = new IndicatorsRegistry();
-registry.register(isLastVersionIndicator);
-registry.register(isSameMajorVersionIndicator);
-registry.register(isSameMinorVersionIndicator);
-registry.register(wasReleasedInLastYear);
-registry.register(wasReleasedInLastThreeMonths);
-registry.register(isReleasedFrequently);
 
-export { registry as indicatorRegistry };
+export function buildRegistry(ctx: ExecutionContext) {
+  const registry = new IndicatorsRegistry(ctx);
+  registry.register(isLastVersionIndicator);
+  registry.register(isSameMajorVersionIndicator);
+  registry.register(isSameMinorVersionIndicator);
+  registry.register(wasReleasedInLastYear);
+  registry.register(wasReleasedInLastThreeMonths);
+  registry.register(isReleasedFrequently);
+  return registry;
+}

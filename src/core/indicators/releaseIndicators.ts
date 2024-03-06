@@ -1,35 +1,55 @@
+import { Library } from "../../models/library";
 import { MILLISECONDS_IN_DAY } from "../../util/constants";
-import { Indicator, IndicatorResult } from "./indicator.types";
-import { IS_RELEASED_FREQUENTLY, WAS_RELEASED_IN_LAST_THREE_MONTHS, WAS_RELEASED_IN_LAST_YEAR } from "./indicatorsNames";
+import { Indicator, IndicatorStatus } from "./indicator.types";
+import {
+  IS_RELEASED_FREQUENTLY,
+  WAS_RELEASED_IN_LAST_THREE_MONTHS,
+  WAS_RELEASED_IN_LAST_YEAR,
+} from "./indicatorsNames";
 
 export const wasReleasedInLastYear: Indicator = {
   name: WAS_RELEASED_IN_LAST_YEAR,
-  expression: (lastVersionDate: Date) => {
+  evaluate: (library: Library) => {
+    const lastVersionDate: Date = library.lastVersionDate;
     const timeSinceLastRelease =
-    (Date.now() - lastVersionDate.getTime()) / MILLISECONDS_IN_DAY;
-    return timeSinceLastRelease < 365 ? IndicatorResult.OK : IndicatorResult.ALERT;
+      (Date.now() - lastVersionDate.getTime()) / MILLISECONDS_IN_DAY;
+    const status =
+      timeSinceLastRelease < 365 ? IndicatorStatus.OK : IndicatorStatus.ALERT;
+    return {
+      status,
+      value: { score: timeSinceLastRelease },
+    };
   },
-  message: "The library has not been updated in the last year."
-}
+  message: "The library has not been updated in the last year.",
+};
 
 export const wasReleasedInLastThreeMonths: Indicator = {
   name: WAS_RELEASED_IN_LAST_THREE_MONTHS,
-  expression: (lastVersionDate: Date) => {
+  evaluate: (library: Library) => {
     const timeSinceLastRelease =
-    (Date.now() - lastVersionDate.getTime()) / MILLISECONDS_IN_DAY;
-    return timeSinceLastRelease < 90 ? IndicatorResult.OK : IndicatorResult.WARNING;
+      (Date.now() - library.lastVersionDate.getTime()) / MILLISECONDS_IN_DAY;
+    const status =
+      timeSinceLastRelease < 90 ? IndicatorStatus.OK : IndicatorStatus.WARNING;
+    return {
+      status,
+      value: { score: timeSinceLastRelease },
+    };
   },
-  message: "The library has not been updated in the last three months."
-}
+  message: "The library has not been updated in the last three months.",
+};
 
 export const isReleasedFrequently: Indicator = {
   name: IS_RELEASED_FREQUENTLY,
-  expression: (releaseFrequency: number) => {
-    return releaseFrequency > 0.3
-      ? IndicatorResult.OK
-      : releaseFrequency < 0.1
-      ? IndicatorResult.ALERT
-      : IndicatorResult.WARNING;
+  evaluate: (library: Library) => {
+    const status =
+      library.releaseFrequency > 0.3
+        ? IndicatorStatus.OK
+        : library.releaseFrequency < 0.1
+        ? IndicatorStatus.ALERT
+        : IndicatorStatus.WARNING;
+    return {
+      status,
+    };
   },
-  message: "The lirary is not released frequently.",
-}
+  message: "The library is not released frequently.",
+};

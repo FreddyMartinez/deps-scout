@@ -8,6 +8,7 @@ export class Library {
   numberOfVersions: number;
   weeklyDownloads: number;
   lastVersion: string;
+  usedVersion: string;
   lastVersionDate: Date;
   lifeSpan: number;
   releaseFrequency: number;

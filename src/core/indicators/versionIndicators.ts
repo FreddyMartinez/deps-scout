@@ -1,5 +1,6 @@
+import { Library } from "../../models/library";
 import {
-  Indicator, IndicatorResult
+  Indicator, IndicatorStatus
 } from "./indicator.types";
 import {
   IS_LAST_VERSION,
@@ -9,8 +10,11 @@ import {
 
 export const isLastVersionIndicator: Indicator = {
   name: IS_LAST_VERSION,
-  expression: (lastVersion: string, usedVersion: string) => {
-    return lastVersion === usedVersion ? IndicatorResult.OK : IndicatorResult.WARNING;
+  evaluate: (library: Library) => {
+    const status = library.lastVersion === library.usedVersion ? IndicatorStatus.OK : IndicatorStatus.WARNING;
+    return {
+      status,
+    };
   },
   message:
     "The used version is not the latest released version of the library.",
@@ -18,24 +22,30 @@ export const isLastVersionIndicator: Indicator = {
 
 export const isSameMajorVersionIndicator: Indicator = {
   name: IS_SAME_MAJOR_VERSION,
-  expression: (lastVersion: string, usedVersion: string) => {
-    const latestSemVer = lastVersion.split(".");
-    const currentSemVer = usedVersion.split(".");
-    return latestSemVer[0] === currentSemVer[0]
-      ? IndicatorResult.OK
-      : IndicatorResult.ALERT;
+  evaluate: (library: Library) => {
+    const latestSemVer = library.lastVersion.split(".");
+    const currentSemVer = library.usedVersion.split(".");
+    const status = latestSemVer[0] === currentSemVer[0]
+      ? IndicatorStatus.OK
+      : IndicatorStatus.ALERT;
+    return {
+      status,
+    };
   },
   message: `The major version of the used library is different from the latest version.`,
 };
 
 export const isSameMinorVersionIndicator: Indicator = {
   name: IS_SAME_MINOR_VERSION,
-  expression: (lastVersion: string, usedVersion: string) => {
-    const latestSemVer = lastVersion.split(".");
-    const currentSemVer = usedVersion.split(".");
-    return latestSemVer[1] === currentSemVer[1]
-      ? IndicatorResult.OK
-      : IndicatorResult.WARNING;
+  evaluate: (library: Library) => {
+    const latestSemVer = library.lastVersion.split(".");
+    const currentSemVer = library.usedVersion.split(".");
+    const status = latestSemVer[1] === currentSemVer[1]
+      ? IndicatorStatus.OK
+      : IndicatorStatus.WARNING;
+    return {
+      status,
+    };
   },
   message:
     "The minor version of the used library is different from the latest version.",
