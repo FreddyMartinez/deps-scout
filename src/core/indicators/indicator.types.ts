@@ -3,7 +3,8 @@ import { Library } from "../../models/library";
 export enum IndicatorStatus {
   OK = 'OK',
   WARNING = 'WARNING',
-  ALERT = 'ALERT'
+  ALERT = 'ALERT',
+  NOT_FOUND = 'NOT_FOUND',
 }
 
 export interface IndicatorResult {

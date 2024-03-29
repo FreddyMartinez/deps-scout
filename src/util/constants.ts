@@ -11,7 +11,5 @@ export const messages = {
 };
 
 const libNotFrequentlyUpdated = "The library is not released frequently.";
-export const timeSinceLastReleaseMessage = (timeSinceLastRelease) =>
-  `${libNotFrequentlyUpdated} last release was ${timeSinceLastRelease} days ago`;
 export const timeBetweenReleasesMessage = (timeBetweenReleases: number) =>
   `${libNotFrequentlyUpdated} Average time between releases is ${timeBetweenReleases} days`;

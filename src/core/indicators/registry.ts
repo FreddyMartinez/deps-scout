@@ -1,7 +1,6 @@
-import { printRed, printYellow } from "../../util/utilityFunctions";
 import { ExecutionContext } from "../ctx/executionContext";
 import { Indicator, IndicatorStatus } from "./indicator.types";
-import { isReleasedFrequently, wasReleasedInLastThreeMonths, wasReleasedInLastYear } from "./releaseIndicators";
+import { isReleasedFrequently, wasReleasedRecently } from "./releaseIndicators";
 import {
   isLastVersionIndicator,
   isSameMajorVersionIndicator,
@@ -22,20 +21,14 @@ export class IndicatorsRegistry {
 
   evaluateIndicator(name: string) {
     const indicator = this.indicators.get(name);
-    if (!indicator) return;
-    return indicator.evaluate(this.ctx.library);
+    if (!indicator) return { status: IndicatorStatus.NOT_FOUND };
+    const result = indicator.evaluate(this.ctx.library);
+    this.ctx.setIndicatorResult(name, result);
+    return result;
   }
 
-  printIndicatorMessage(name: string, result: IndicatorStatus) {
-    const indicator = this.indicators.get(name);
-    if (!indicator) return;
-    if(result === IndicatorStatus.WARNING) {
-      printYellow(indicator.message);
-      return;
-    }
-    if(result === IndicatorStatus.ALERT) {
-      printRed(indicator.message);
-    }
+  printIndicatorMessage(name: string) {
+    this.ctx.printIndicatorResult(name);
   }
 }
 
@@ -45,8 +38,7 @@ export function buildRegistry(ctx: ExecutionContext) {
   registry.register(isLastVersionIndicator);
   registry.register(isSameMajorVersionIndicator);
   registry.register(isSameMinorVersionIndicator);
-  registry.register(wasReleasedInLastYear);
-  registry.register(wasReleasedInLastThreeMonths);
+  registry.register(wasReleasedRecently);
   registry.register(isReleasedFrequently);
   return registry;
 }

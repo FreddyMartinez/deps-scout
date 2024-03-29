@@ -7,8 +7,7 @@ import {
   IS_RELEASED_FREQUENTLY,
   IS_SAME_MAJOR_VERSION,
   IS_SAME_MINOR_VERSION,
-  WAS_RELEASED_IN_LAST_THREE_MONTHS,
-  WAS_RELEASED_IN_LAST_YEAR,
+  WAS_RELEASED_RECENTLY,
 } from "./indicators/indicatorsNames";
 import { IndicatorsRegistry, buildRegistry } from "./indicators/registry";
 import { ConsoleExecutionContext } from "./ctx/executionContext";
@@ -46,62 +45,29 @@ function analyzeVersion(indicatorRegistry: IndicatorsRegistry) {
 
   if (isLastVersion === IndicatorStatus.OK) return;
 
-  indicatorRegistry.printIndicatorMessage(IS_LAST_VERSION, isLastVersion);
+  indicatorRegistry.printIndicatorMessage(IS_LAST_VERSION);
+
   const isSameMajorVersion = indicatorRegistry.evaluateIndicator(
     IS_SAME_MAJOR_VERSION
   ).status;
 
   if (isSameMajorVersion !== IndicatorStatus.OK) {
-    indicatorRegistry.printIndicatorMessage(
-      IS_SAME_MAJOR_VERSION,
-      isSameMajorVersion
-    );
+    indicatorRegistry.printIndicatorMessage(IS_SAME_MAJOR_VERSION);
     return;
   }
 
-  const isSameMinorVersion = indicatorRegistry.evaluateIndicator(
-    IS_SAME_MINOR_VERSION
-  ).status;
-  indicatorRegistry.printIndicatorMessage(
-    IS_SAME_MINOR_VERSION,
-    isSameMinorVersion
-  );
+  indicatorRegistry.evaluateIndicator(IS_SAME_MINOR_VERSION);
+  indicatorRegistry.printIndicatorMessage(IS_SAME_MINOR_VERSION);
 }
 
 function analizeTimeSinceLastRelease(indicatorRegistry: IndicatorsRegistry) {
-  const wasReleasedInLastThreeMonths = indicatorRegistry.evaluateIndicator(
-    WAS_RELEASED_IN_LAST_THREE_MONTHS
-  ).status;
-
-  if (wasReleasedInLastThreeMonths === IndicatorStatus.OK) return;
-
-  const wasReleasedInLastYear = indicatorRegistry.evaluateIndicator(
-    WAS_RELEASED_IN_LAST_YEAR
-  ).status;
-
-  if (wasReleasedInLastYear === IndicatorStatus.OK) {
-    indicatorRegistry.printIndicatorMessage(
-      WAS_RELEASED_IN_LAST_THREE_MONTHS,
-      wasReleasedInLastThreeMonths
-    );
-    return;
-  }
-  indicatorRegistry.printIndicatorMessage(
-    WAS_RELEASED_IN_LAST_YEAR,
-    wasReleasedInLastYear
-  );
+  indicatorRegistry.evaluateIndicator(WAS_RELEASED_RECENTLY).status;
+  indicatorRegistry.printIndicatorMessage(WAS_RELEASED_RECENTLY);
 }
 
 function analyzeReleaseFrequency(indicatorRegistry: IndicatorsRegistry) {
-  const isReleasedFrequently = indicatorRegistry.evaluateIndicator(
-    IS_RELEASED_FREQUENTLY
-  ).status;
-  if (isReleasedFrequently === IndicatorStatus.OK) return;
-
-  indicatorRegistry.printIndicatorMessage(
-    IS_RELEASED_FREQUENTLY,
-    isReleasedFrequently
-  );
+  indicatorRegistry.evaluateIndicator(IS_RELEASED_FREQUENTLY);
+  indicatorRegistry.printIndicatorMessage(IS_RELEASED_FREQUENTLY);
 }
 
 function analyzePopularity(library: Library) {
