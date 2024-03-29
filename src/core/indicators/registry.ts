@@ -40,5 +40,7 @@ export function buildRegistry(ctx: ExecutionContext) {
   registry.register(isSameMinorVersionIndicator);
   registry.register(wasReleasedRecently);
   registry.register(isReleasedFrequently);
+  registry.register(isDowloadedFrecuentlyIndicator);
+  registry.register(isStarredLibraryIndicator);
   return registry;
 }
