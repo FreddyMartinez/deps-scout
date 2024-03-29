@@ -8,11 +8,11 @@ export enum IndicatorStatus {
 
 export interface IndicatorResult {
   status: IndicatorStatus;
-  value?: { score: number} & Record<string, unknown>;
+  value: { score: number, message: string} & Record<string, unknown>;
 }
 
 export type Indicator = {
   name: string;
   evaluate: (lib: Library) => IndicatorResult;
-  message: string;
+  message: string | ((...data: unknown[]) => string);
 }

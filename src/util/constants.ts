@@ -10,8 +10,8 @@ export const messages = {
     "Error reading package.json, make sure there is a valid package.json file in the current directory.",
 };
 
-const libNotFrequentlyUpdated = "Library not frequently updated:";
+const libNotFrequentlyUpdated = "The library is not released frequently.";
 export const timeSinceLastReleaseMessage = (timeSinceLastRelease) =>
   `${libNotFrequentlyUpdated} last release was ${timeSinceLastRelease} days ago`;
-export const timeBetweenReleasesMessage = (timeBetweenReleases) =>
-  `${libNotFrequentlyUpdated} average time among releases is ${timeBetweenReleases} days`;
+export const timeBetweenReleasesMessage = (timeBetweenReleases: number) =>
+  `${libNotFrequentlyUpdated} Average time between releases is ${timeBetweenReleases} days`;
