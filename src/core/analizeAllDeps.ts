@@ -1,4 +1,4 @@
-import { libraryBuilder } from "./libraryBuilder";
+import { libraryBuilder } from "../models/libraryBuilder";
 import { getProjectDeps } from "../util/readDeps";
 
 export async function analyzeAllDeps() {

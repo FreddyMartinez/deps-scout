@@ -1,4 +1,4 @@
-import { Library } from "../models/library";
+import { Library } from "./library";
 import { getNpmData, getNpmDownloads } from "../services/getDataNpm";
 import {
   getRepoCommunityProfile,

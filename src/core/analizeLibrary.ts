@@ -1,4 +1,4 @@
-import { libraryBuilder } from "./libraryBuilder";
+import { libraryBuilder } from "../models/libraryBuilder";
 import { Library } from "../models/library";
 import { printGreen, printRed, printYellow } from "../util/utilityFunctions";
 import { IndicatorStatus } from "./indicators/indicator.types";
