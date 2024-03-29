@@ -11,6 +11,7 @@ export interface ExecutionContext {
   library: Library;
   executionStatus: ExecutionStatus;
   setIndicatorResult: (indicatorName: string, result: unknown) => void;
+  getIndicatorResult: (indicatorName: string) => IndicatorResult | undefined;
   printIndicatorResult: (indicator: string) => void;
   showResults: () => void;
 }
@@ -30,6 +31,10 @@ export class ConsoleExecutionContext implements ExecutionContext {
 
   setIndicatorResult(name: string, result: IndicatorResult) {
     this.results.set(name, result);
+  }
+
+  getIndicatorResult(name: string) {
+    return this.results.get(name);
   }
 
   printIndicatorResult(indicatorName: string) {

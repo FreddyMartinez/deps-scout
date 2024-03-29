@@ -7,7 +7,7 @@ import {
 import { isTypeOf, logErrors } from "../util/utilityFunctions";
 
 class LibraryBuilder {
-  async buildLibraryInstance(lib: string) {
+  async buildLibraryInstance(lib: string, version?: string) {
     try {
       const [npmData, npmDownloads] = await Promise.all([
         getNpmData(lib),
@@ -15,6 +15,7 @@ class LibraryBuilder {
       ]);
   
       const library = new Library(npmData);
+      library.setUsedVersion(version);
       if (npmDownloads) library.setDownloadsData(npmDownloads);
       return library;
     } catch (error) {

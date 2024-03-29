@@ -46,13 +46,17 @@ export class Library {
     this.releaseFrequency = this.numberOfVersions / this.lifeSpan;
   }
 
+  setUsedVersion(version?: string) {
+    this.usedVersion = version || this.lastVersion;
+  }
+
   setDownloadsData(npmDownloads: NpmDownloads) {
-    this.weeklyDownloads = npmDownloads.downloads || 0;
+    this.weeklyDownloads = npmDownloads.downloads || 1;
   }
 
   setRepoData(repoData: GitData) {
     this.repoOpenIssues = repoData.open_issues_count || repoData.open_issues;
-    this.repoStars = repoData.stargazers_count || 0;
+    this.repoStars = repoData.stargazers_count || 1;
     this.repoForks = repoData.forks_count || repoData.forks;
     this.repoObservers = repoData.subscribers_count;
     this.repoOwnerType = repoData.owner?.type;
