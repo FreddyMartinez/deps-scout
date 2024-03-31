@@ -1,5 +1,13 @@
 import { libraryBuilder } from "../models/libraryBuilder";
-import { getProjectDeps } from "../util/readDeps";
+import { readFileAsync } from "../util/readFileAsync";
+
+async function getProjectDeps() {
+  const packageJson = await readFileAsync("./package.json", "utf8");
+  const parsedPackageJson = JSON.parse(packageJson);
+  const dependencies = parsedPackageJson.dependencies;
+  const devDependencies = parsedPackageJson.devDependencies;
+  return { ...dependencies, ...devDependencies } as Record<string, string>;
+}
 
 export async function analyzeAllDeps() {
   try {
