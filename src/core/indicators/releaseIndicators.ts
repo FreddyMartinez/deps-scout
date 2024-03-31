@@ -3,22 +3,30 @@ import {
   MILLISECONDS_IN_DAY,
   timeBetweenReleasesMessage,
 } from "../../util/constants";
-import { Indicator, IndicatorStatus } from "./indicators.types";
+import { IndicatorStatus } from "./indicators.types";
 import {
   IS_RELEASED_FREQUENTLY,
   WAS_RELEASED_RECENTLY,
 } from "./indicators.constants";
+import { IndicatorWithThresholds } from "./baseIndicator";
 
-class ReleasedRecentlyIndicator implements Indicator {
+/**
+ * Indicator that checks if the library was released recently.
+ * @param warningThreshold - The number of days since the last release to trigger a warning.
+ * @param alertThreshold - The number of days since the last release to trigger an alert.
+ */
+class ReleasedRecentlyIndicator extends IndicatorWithThresholds {
   name = WAS_RELEASED_RECENTLY;
+  protected warningThreshold = 90; // days since last release
+  protected alertThreshold = 365;
 
   evaluate(library: Library) {
     const timeSinceLastRelease =
       (Date.now() - library.lastVersionDate.getTime()) / MILLISECONDS_IN_DAY;
     const status =
-      timeSinceLastRelease < 90
+      timeSinceLastRelease < this.warningThreshold
         ? IndicatorStatus.OK
-        : timeSinceLastRelease < 365
+        : timeSinceLastRelease < this.alertThreshold
         ? IndicatorStatus.WARNING
         : IndicatorStatus.ALERT;
     return {
@@ -30,22 +38,28 @@ class ReleasedRecentlyIndicator implements Indicator {
     };
   }
 
-  message(timeSinceLastRelease: number) {
+  message = (timeSinceLastRelease: number) => {
     return `The library has not been updated in the last ${Math.round(
       timeSinceLastRelease
     )} days.`;
-  }
+  };
 }
 
-export const wasReleasedRecently = new ReleasedRecentlyIndicator();
+/**
+ * Indicator that checks the average time between releases.
+ * @param warningThreshold - The number of days between releases to trigger a warning.
+ * @param alertThreshold - The number of days between releases to trigger an alert.
+ */
+class ReleaseFrequencyIndicator extends IndicatorWithThresholds {
+  name = IS_RELEASED_FREQUENTLY;
+  protected warningThreshold = 10; // days between releases
+  protected alertThreshold = 30;
 
-export const isReleasedFrequently: Indicator = {
-  name: IS_RELEASED_FREQUENTLY,
-  evaluate: function (library: Library) {
+  evaluate(library: Library) {
     const status =
-      library.releaseFrequency > 0.3
+      library.releaseFrequency > 1 / this.warningThreshold
         ? IndicatorStatus.OK
-        : library.releaseFrequency < 0.1
+        : library.releaseFrequency < 1 / this.alertThreshold
         ? IndicatorStatus.ALERT
         : IndicatorStatus.WARNING;
     return {
@@ -55,7 +69,11 @@ export const isReleasedFrequently: Indicator = {
         message: this.message(library.releaseFrequency),
       },
     };
-  },
-  message: (frequency: number) =>
-    timeBetweenReleasesMessage(Math.round(1 / frequency)),
-};
+  }
+
+  message = (frequency: number) =>
+    timeBetweenReleasesMessage(Math.round(1 / frequency));
+}
+
+export const wasReleasedRecently = new ReleasedRecentlyIndicator();
+export const isReleasedFrequently = new ReleaseFrequencyIndicator();

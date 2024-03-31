@@ -1,6 +1,7 @@
 import { readFileAsync } from "../../util/readFileAsync";
+import { ScoutConfig } from "./config.types";
 
-const defaultConfig = {
+const defaultConfig: ScoutConfig = {
   indicators: [
     "is-last-version",
     "is-same-major-version",
@@ -15,8 +16,9 @@ const defaultConfig = {
 export async function readScoutConfig() {
   try {
     const configStr = await readFileAsync("./scout.config.json", "utf8");
-    return JSON.parse(configStr);
+    return JSON.parse(configStr) as ScoutConfig;
   } catch (error) {
+    console.log("No scout.config.json found, using default config.");
     return defaultConfig;
   }
 }

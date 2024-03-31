@@ -3,6 +3,7 @@ import {
   Indicator,
   IndicatorPrecondition,
   IndicatorStatus,
+  IndicatorThresholds,
 } from "../indicators/indicators.types";
 
 export class IndicatorsRegistry {
@@ -20,6 +21,13 @@ export class IndicatorsRegistry {
 
   setIndicatorsToEvaluate(indicators: string[]) {
     this.indicatorsToEvaluate = indicators;
+  }
+
+  setIndicatorThreshold(indicatorName: string, thresholds: IndicatorThresholds) {
+    const indicator = this.indicators.get(indicatorName);
+    if (!indicator) return;
+
+    indicator.setThresholds?.(thresholds);
   }
 
   evaluateIndicators() {

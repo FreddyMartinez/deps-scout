@@ -25,4 +25,10 @@ export type Indicator = {
   evaluate: (lib: Library) => IndicatorResult;
   message: string | ((...data: unknown[]) => string);
   preconditions?: Array<IndicatorPrecondition>;
+  setThresholds?: (thresholds: IndicatorThresholds) => void;
+};
+
+export type IndicatorThresholds = {
+  warningThreshold: number;
+  alertThreshold: number;
 };

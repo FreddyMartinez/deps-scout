@@ -7,5 +7,11 @@
     "is-released-frequently",
     "is-downloaded-frequently",
     "is-starred-repo"
-  ]
+  ],
+  "thresholds": {
+    "is-released-frequently": {
+      "warningThreshold": 30,
+      "alertThreshold": 90
+    }
+  }
 }

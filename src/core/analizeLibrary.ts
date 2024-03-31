@@ -13,10 +13,9 @@ export async function analyzeOneLibrary(lib: string, version?: string) {
 }
 
 export async function analyzeLibrary(library: Library) {
-  printGreen(`Analyzing library: ${library.name}`);
-
   const executionContext = new ConsoleExecutionContext(library);
   const indicatorRegistry = await buildRegistry(executionContext);
 
+  printGreen(`Analyzing library: ${library.name}`);  
   indicatorRegistry.evaluateIndicators();
 }
