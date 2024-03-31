@@ -1,6 +1,9 @@
 import { Library } from "../../models/library";
 import { printRed, printYellow } from "../../util/utilityFunctions";
-import { IndicatorResult, IndicatorStatus } from "../indicators/indicator.types";
+import {
+  IndicatorResult,
+  IndicatorStatus,
+} from "../indicators/indicator.types";
 
 export enum ExecutionStatus {
   CONTINUE = "CONTINUE",
@@ -39,18 +42,18 @@ export class ConsoleExecutionContext implements ExecutionContext {
 
   printIndicatorResult(indicatorName: string) {
     const result = this.results.get(indicatorName);
-    if(result.status === IndicatorStatus.WARNING) {
+    if (result.status === IndicatorStatus.WARNING) {
       printYellow(result.value.message);
       return;
     }
-    if(result.status === IndicatorStatus.ALERT) {
+    if (result.status === IndicatorStatus.ALERT) {
       printRed(result.value.message);
     }
   }
 
   showResults() {
     for (const indicator of this.results.keys()) {
-      this.printIndicatorResult(indicator)
+      this.printIndicatorResult(indicator);
     }
   }
 }
