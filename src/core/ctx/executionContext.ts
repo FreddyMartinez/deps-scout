@@ -3,7 +3,7 @@ import { printRed, printYellow } from "../../util/utilityFunctions";
 import {
   IndicatorResult,
   IndicatorStatus,
-} from "../indicators/indicator.types";
+} from "../indicators/indicators.types";
 
 export enum ExecutionStatus {
   CONTINUE = "CONTINUE",

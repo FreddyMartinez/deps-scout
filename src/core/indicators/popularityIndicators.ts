@@ -1,6 +1,9 @@
 import { Library } from "../../models/library";
-import { Indicator, IndicatorStatus } from "./indicator.types";
-import { IS_DOWNLOADED_FREQUENTLY, IS_STARRED_REPO } from "./indicatorsNames";
+import { Indicator, IndicatorStatus } from "./indicators.types";
+import {
+  IS_DOWNLOADED_FREQUENTLY,
+  IS_STARRED_REPO,
+} from "./indicators.constants";
 
 class DownloadsIndicator implements Indicator {
   name = IS_DOWNLOADED_FREQUENTLY;

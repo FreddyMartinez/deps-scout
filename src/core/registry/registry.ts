@@ -1,5 +1,9 @@
 import { ExecutionContext } from "../ctx/executionContext";
-import { Indicator, IndicatorPrecondition, IndicatorStatus } from "../indicators/indicator.types";
+import {
+  Indicator,
+  IndicatorPrecondition,
+  IndicatorStatus,
+} from "../indicators/indicators.types";
 
 export class IndicatorsRegistry {
   private indicators = new Map<string, Indicator>();

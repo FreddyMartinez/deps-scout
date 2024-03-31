@@ -3,11 +3,11 @@ import {
   MILLISECONDS_IN_DAY,
   timeBetweenReleasesMessage,
 } from "../../util/constants";
-import { Indicator, IndicatorStatus } from "./indicator.types";
+import { Indicator, IndicatorStatus } from "./indicators.types";
 import {
   IS_RELEASED_FREQUENTLY,
   WAS_RELEASED_RECENTLY,
-} from "./indicatorsNames";
+} from "./indicators.constants";
 
 class ReleasedRecentlyIndicator implements Indicator {
   name = WAS_RELEASED_RECENTLY;
@@ -31,7 +31,9 @@ class ReleasedRecentlyIndicator implements Indicator {
   }
 
   message(timeSinceLastRelease: number) {
-    return `The library has not been updated in the last ${Math.round(timeSinceLastRelease)} days.`;
+    return `The library has not been updated in the last ${Math.round(
+      timeSinceLastRelease
+    )} days.`;
   }
 }
 

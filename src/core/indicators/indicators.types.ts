@@ -1,10 +1,10 @@
 import { Library } from "../../models/library";
 
 export enum IndicatorStatus {
-  OK = 'OK',
-  WARNING = 'WARNING',
-  ALERT = 'ALERT',
-  NOT_FOUND = 'NOT_FOUND',
+  OK = "OK",
+  WARNING = "WARNING",
+  ALERT = "ALERT",
+  NOT_FOUND = "NOT_FOUND",
 }
 
 export interface IndicatorResult {
@@ -12,7 +12,10 @@ export interface IndicatorResult {
   value: { score: number; message: string } & Record<string, unknown>;
 }
 
-export type IndicatorPrecondition = { metricName: string; status: IndicatorStatus };
+export type IndicatorPrecondition = {
+  metricName: string;
+  status: IndicatorStatus;
+};
 
 /**
  * Represents an indicator (metric) that can be evaluated for a library.

@@ -1,10 +1,10 @@
 import { Library } from "../../models/library";
-import { Indicator, IndicatorStatus } from "./indicator.types";
+import { Indicator, IndicatorStatus } from "./indicators.types";
 import {
   IS_LAST_VERSION,
   IS_SAME_MAJOR_VERSION,
   IS_SAME_MINOR_VERSION,
-} from "./indicatorsNames";
+} from "./indicators.constants";
 
 class SameVersionIndicator implements Indicator {
   name = IS_LAST_VERSION;
