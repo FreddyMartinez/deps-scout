@@ -1,16 +1,10 @@
 import { ExecutionContext } from "../ctx/executionContext";
-import { Indicator, IndicatorPrecondition, IndicatorStatus } from "./indicator.types";
-import { isDowloadedFrecuentlyIndicator, isStarredLibraryIndicator } from "./popularityIndicators";
-import { isReleasedFrequently, wasReleasedRecently } from "./releaseIndicators";
-import {
-  isLastVersionIndicator,
-  isSameMajorVersionIndicator,
-  isSameMinorVersionIndicator,
-} from "./versionIndicators";
+import { Indicator, IndicatorPrecondition, IndicatorStatus } from "../indicators/indicator.types";
 
 export class IndicatorsRegistry {
   private indicators = new Map<string, Indicator>();
   private ctx: ExecutionContext;
+  private indicatorsToEvaluate: string[];
 
   constructor(ctx: ExecutionContext) {
     this.ctx = ctx;
@@ -20,7 +14,20 @@ export class IndicatorsRegistry {
     this.indicators.set(indicator.name, indicator);
   }
 
-  evaluateIndicator(name: string) {
+  setIndicatorsToEvaluate(indicators: string[]) {
+    this.indicatorsToEvaluate = indicators;
+  }
+
+  evaluateIndicators() {
+    if (!this.indicatorsToEvaluate || this.indicatorsToEvaluate.length === 0)
+      this.indicatorsToEvaluate = Array.from(this.indicators.keys());
+
+    for (const name of this.indicatorsToEvaluate) {
+      this.evaluateIndicator(name);
+    }
+  }
+
+  private evaluateIndicator(name: string) {
     const indicator = this.indicators.get(name);
     if (!indicator) return { status: IndicatorStatus.NOT_FOUND };
 
@@ -46,17 +53,4 @@ export class IndicatorsRegistry {
     }
     return true;
   }
-}
-
-
-export function buildRegistry(ctx: ExecutionContext) {
-  const registry = new IndicatorsRegistry(ctx);
-  registry.register(isLastVersionIndicator);
-  registry.register(isSameMajorVersionIndicator);
-  registry.register(isSameMinorVersionIndicator);
-  registry.register(wasReleasedRecently);
-  registry.register(isReleasedFrequently);
-  registry.register(isDowloadedFrecuentlyIndicator);
-  registry.register(isStarredLibraryIndicator);
-  return registry;
 }

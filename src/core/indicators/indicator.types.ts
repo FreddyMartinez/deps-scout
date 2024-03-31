@@ -14,6 +14,9 @@ export interface IndicatorResult {
 
 export type IndicatorPrecondition = { metricName: string; status: IndicatorStatus };
 
+/**
+ * Represents an indicator (metric) that can be evaluated for a library.
+ */
 export type Indicator = {
   name: string;
   evaluate: (lib: Library) => IndicatorResult;

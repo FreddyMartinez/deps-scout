@@ -1,0 +1,11 @@
+{
+  "indicators": [
+    "is-last-version",
+    "is-same-major-version",
+    "is-same-minor-version",
+    "was-released-recently",
+    "is-released-frequently",
+    "is-downloaded-frequently",
+    "is-starred-repo"
+  ]
+}
