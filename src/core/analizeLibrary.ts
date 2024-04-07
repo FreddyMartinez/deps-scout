@@ -1,21 +1,19 @@
 import { libraryBuilder } from "../models/libraryBuilder";
 import { Library } from "../models/library";
-import { printGreen } from "../util/utilityFunctions";
 import { buildRegistry } from "./registry/registryBuilder";
-import { ConsoleExecutionContext } from "./ctx/executionContext";
+import { EvaluationExecutor } from "./executor/executor";
 
 export async function analyzeOneLibrary(lib: string, version?: string) {
   const libInstance = await libraryBuilder.buildLibraryInstance(lib, version);
 
   if (!libInstance) return;
-  await analyzeLibrary(libInstance);
+  await analyzeLibraries([libInstance]);
   console.log(libInstance);
 }
 
-export async function analyzeLibrary(library: Library) {
-  const executionContext = new ConsoleExecutionContext(library);
-  const indicatorRegistry = await buildRegistry(executionContext);
-
-  printGreen(`Analyzing library: ${library.name}`);  
-  indicatorRegistry.evaluateIndicators();
+export async function analyzeLibraries(libraries: Library[]) {
+  const indicatorRegistry = await buildRegistry();
+  const executor = new EvaluationExecutor(indicatorRegistry);
+  executor.setLibraries(libraries);
+  executor.evaluate();
 }

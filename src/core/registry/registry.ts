@@ -1,4 +1,4 @@
-import { ExecutionContext } from "../ctx/executionContext";
+import { ResultsStore } from "../executor/resultsStore";
 import {
   Indicator,
   IndicatorPrecondition,
@@ -8,12 +8,8 @@ import {
 
 export class IndicatorsRegistry {
   private indicators = new Map<string, Indicator>();
-  private ctx: ExecutionContext;
+  private resultStore: ResultsStore;
   private indicatorsToEvaluate: string[];
-
-  constructor(ctx: ExecutionContext) {
-    this.ctx = ctx;
-  }
 
   register(indicator: Indicator) {
     this.indicators.set(indicator.name, indicator);
@@ -30,6 +26,10 @@ export class IndicatorsRegistry {
     indicator.setThresholds?.(thresholds);
   }
 
+  setResultsStore(results: ResultsStore) {
+    this.resultStore = results;
+  }
+
   evaluateIndicators() {
     if (!this.indicatorsToEvaluate || this.indicatorsToEvaluate.length === 0)
       this.indicatorsToEvaluate = Array.from(this.indicators.keys());
@@ -37,7 +37,6 @@ export class IndicatorsRegistry {
     for (const name of this.indicatorsToEvaluate) {
       this.evaluateIndicator(name);
     }
-    this.ctx.showResults();
   }
 
   private evaluateIndicator(name: string) {
@@ -47,8 +46,8 @@ export class IndicatorsRegistry {
     const shouldEvaluate = this.meetsPreconditions(indicator.preconditions);
     if (!shouldEvaluate) return; 
 
-    const result = indicator.evaluate(this.ctx.library);
-    this.ctx.setIndicatorResult(name, result);
+    const result = indicator.evaluate(this.resultStore.library);
+    this.resultStore.setIndicatorResult(name, result);
     return result;
   }
 
@@ -57,7 +56,7 @@ export class IndicatorsRegistry {
 
     for (const precondition of preconditions) {
       const result =
-        this.ctx.getIndicatorResult(precondition.metricName) ||
+        this.resultStore.getIndicatorResult(precondition.metricName) ||
         this.evaluateIndicator(precondition.metricName);
       if (result.status != precondition.status) {
         return false;

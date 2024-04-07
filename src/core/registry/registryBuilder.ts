@@ -1,5 +1,4 @@
 import { readScoutConfig } from "./readConfig";
-import { ExecutionContext } from "../ctx/executionContext";
 import { isDowloadedFrecuentlyIndicator, isStarredLibraryIndicator } from "../indicators/popularityIndicators";
 import { isReleasedFrequently, wasReleasedRecently } from "../indicators/releaseIndicators";
 import {
@@ -17,9 +16,9 @@ function applyThresholds(thresholds: ThresholdsConfig, registry: IndicatorsRegis
   });
 }
 
-export async function buildRegistry(ctx: ExecutionContext) {
+export async function buildRegistry() {
   const config = await readScoutConfig();
-  const registry = new IndicatorsRegistry(ctx);
+  const registry = new IndicatorsRegistry();
   registry.setIndicatorsToEvaluate(config.indicators);
   registry.register(isLastVersionIndicator);
   registry.register(isSameMajorVersionIndicator);
