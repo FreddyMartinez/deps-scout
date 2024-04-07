@@ -15,7 +15,6 @@ export interface ExecutionContext {
   executionStatus: ExecutionStatus;
   setIndicatorResult: (indicatorName: string, result: unknown) => void;
   getIndicatorResult: (indicatorName: string) => IndicatorResult | undefined;
-  printIndicatorResult: (indicator: string) => void;
   showResults: () => void;
 }
 

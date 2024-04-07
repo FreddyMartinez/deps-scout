@@ -37,6 +37,7 @@ export class IndicatorsRegistry {
     for (const name of this.indicatorsToEvaluate) {
       this.evaluateIndicator(name);
     }
+    this.ctx.showResults();
   }
 
   private evaluateIndicator(name: string) {
@@ -48,7 +49,6 @@ export class IndicatorsRegistry {
 
     const result = indicator.evaluate(this.ctx.library);
     this.ctx.setIndicatorResult(name, result);
-    this.ctx.printIndicatorResult(name);
     return result;
   }
 
