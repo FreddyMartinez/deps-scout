@@ -1,38 +1,43 @@
 import { Library } from "../../models/library";
-import { Indicator, IndicatorStatus } from "./indicators.types";
+import { IndicatorStatus } from "./indicators.types";
 import {
   IS_DOWNLOADED_FREQUENTLY,
   IS_STARRED_REPO,
 } from "./indicators.constants";
+import { IndicatorWithThresholds } from "./baseIndicator";
 
-class DownloadsIndicator implements Indicator {
+class DownloadsIndicator extends IndicatorWithThresholds {
   name = IS_DOWNLOADED_FREQUENTLY;
+  protected warningThreshold = 10000;
+  protected alertThreshold = 100;
 
   evaluate(library: Library) {
-    const logDownloads = Math.log10(library.weeklyDownloads);
+    const downloads = library.weeklyDownloads;
     const status =
-      logDownloads >= 5
+      downloads >= this.warningThreshold
         ? IndicatorStatus.OK
-        : logDownloads < 2
+        : downloads < this.alertThreshold
         ? IndicatorStatus.ALERT
         : IndicatorStatus.WARNING;
 
     return {
       status,
       value: {
-        score: logDownloads,
+        score: Math.log10(downloads),
         message: this.message(library.weeklyDownloads),
       },
     };
   }
 
-  message(weeklyDownloads: number) {
+  message = (weeklyDownloads: number) => {
     return `Library not widely used: ${weeklyDownloads} weekly downloads`;
-  }
+  };
 }
 
-class StarsIndicator implements Indicator {
+class StarsIndicator extends IndicatorWithThresholds {
   name = IS_STARRED_REPO;
+  protected warningThreshold = 500;
+  protected alertThreshold = 100;
 
   evaluate(library: Library) {
     if (!library.repoStars) {
@@ -40,9 +45,9 @@ class StarsIndicator implements Indicator {
     }
 
     const status =
-      library.repoStars > 500
+      library.repoStars > this.warningThreshold
         ? IndicatorStatus.OK
-        : library.repoStars < 100
+        : library.repoStars < this.alertThreshold
         ? IndicatorStatus.ALERT
         : IndicatorStatus.WARNING;
 
@@ -55,9 +60,9 @@ class StarsIndicator implements Indicator {
     };
   }
 
-  message(stars: number) {
+  message = (stars: number) => {
     return `Repo not widely starred: ${stars} stars in Github`;
-  }
+  };
 }
 
 export const isDowloadedFrecuentlyIndicator = new DownloadsIndicator();
