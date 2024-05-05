@@ -1,9 +1,10 @@
 import { Library } from "../../models/library";
-import { IndicatorResult } from "../indicators/indicators.types";
+import { IndicatorResult, IndicatorStatus } from "../indicators/indicators.types";
 
 export class ResultsStore {
   private lib: Library;
   private results = new Map<string, IndicatorResult>();
+
   constructor(library: Library) {
     this.lib = library;
     this.results = new Map();
@@ -15,6 +16,13 @@ export class ResultsStore {
 
   get keys() {
     return this.results.keys();
+  }
+
+  get alerts() {
+    return [...this.results.values()].reduce((acc, result) => {
+      if (result.status === IndicatorStatus.ALERT) acc++;
+      return acc;
+    }, 0);
   }
 
   setIndicatorResult(name: string, result: IndicatorResult) {

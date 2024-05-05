@@ -13,5 +13,9 @@
       "warningThreshold": 30,
       "alertThreshold": 90
     }
+  }, 
+  "conditions": {
+    "mustBeOk": ["was-released-recently"],
+    "maxAlerts": 2
   }
 }

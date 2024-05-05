@@ -19,7 +19,6 @@ function applyThresholds(thresholds: ThresholdsConfig, registry: IndicatorsRegis
 export async function buildRegistry() {
   const config = await readScoutConfig();
   const registry = new IndicatorsRegistry();
-  registry.setIndicatorsToEvaluate(config.indicators);
   registry.register(isLastVersionIndicator);
   registry.register(isSameMajorVersionIndicator);
   registry.register(isSameMinorVersionIndicator);
@@ -27,6 +26,8 @@ export async function buildRegistry() {
   registry.register(isReleasedFrequently);
   registry.register(isDowloadedFrecuentlyIndicator);
   registry.register(isStarredLibraryIndicator);
+  registry.setIndicatorsToEvaluate(config.indicators);
+  registry.setStopConditions(config.conditions);
   config.thresholds && applyThresholds(config.thresholds, registry);
   return registry;
 }

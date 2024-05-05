@@ -5,18 +5,33 @@ import {
   IndicatorStatus,
   IndicatorThresholds,
 } from "../indicators/indicators.types";
+import { StopConditions } from "./config.types";
 
 export class IndicatorsRegistry {
   private indicators = new Map<string, Indicator>();
   private resultStore: ResultsStore;
   private indicatorsToEvaluate: string[];
+  private stopConditions?: StopConditions;
 
   register(indicator: Indicator) {
     this.indicators.set(indicator.name, indicator);
   }
 
   setIndicatorsToEvaluate(indicators: string[]) {
+    if (!indicators || indicators.length === 0) {
+      this.indicatorsToEvaluate = Array.from(this.indicators.keys());
+      return;
+    }
+
     this.indicatorsToEvaluate = indicators;
+  }
+
+  get desiredIndicators() {
+    return this.indicatorsToEvaluate;
+  }
+
+  setStopConditions(conditions: StopConditions) {
+    this.stopConditions = conditions;
   }
 
   setIndicatorThreshold(indicatorName: string, thresholds: IndicatorThresholds) {
@@ -30,16 +45,7 @@ export class IndicatorsRegistry {
     this.resultStore = results;
   }
 
-  evaluateIndicators() {
-    if (!this.indicatorsToEvaluate || this.indicatorsToEvaluate.length === 0)
-      this.indicatorsToEvaluate = Array.from(this.indicators.keys());
-
-    for (const name of this.indicatorsToEvaluate) {
-      this.evaluateIndicator(name);
-    }
-  }
-
-  private evaluateIndicator(name: string) {
+  evaluateIndicator(name: string) {
     const indicator = this.indicators.get(name);
     if (!indicator) return { status: IndicatorStatus.NOT_FOUND };
 
@@ -63,5 +69,34 @@ export class IndicatorsRegistry {
       }
     }
     return true;
+  }
+
+  meetsStopConditions(indicator: string, status: IndicatorStatus) {
+    if (!this.stopConditions) return false;
+
+    if (
+      typeof this.stopConditions.maxAlerts === "number" &&
+      this.resultStore.alerts > this.stopConditions.maxAlerts
+    ) {
+      return true;
+    }
+
+    if (
+      !!this.stopConditions.shallNotAlert &&
+      this.stopConditions.shallNotAlert.includes(indicator) &&
+      status === IndicatorStatus.ALERT
+    ) {
+      return true;
+    }
+
+    if (
+      !!this.stopConditions.mustBeOk &&
+      this.stopConditions.mustBeOk.includes(indicator) &&
+      status !== IndicatorStatus.OK
+    ) {
+      return true;
+    }
+
+    return false;
   }
 }
