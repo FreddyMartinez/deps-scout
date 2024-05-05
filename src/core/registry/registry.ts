@@ -50,7 +50,7 @@ export class IndicatorsRegistry {
     if (!indicator) return { status: IndicatorStatus.NOT_FOUND };
 
     const shouldEvaluate = this.meetsPreconditions(indicator.preconditions);
-    if (!shouldEvaluate) return; 
+    if (!shouldEvaluate) return { status: IndicatorStatus.NON_EVALUABLE }; 
 
     const result = indicator.evaluate(this.resultStore.library);
     this.resultStore.setIndicatorResult(name, result);

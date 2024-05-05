@@ -5,6 +5,7 @@ export enum IndicatorStatus {
   WARNING = "WARNING",
   ALERT = "ALERT",
   NOT_FOUND = "NOT_FOUND",
+  NON_EVALUABLE = "NON_EVALUABLE",
 }
 
 export interface IndicatorResult {
