@@ -9,9 +9,14 @@ import { analyzeLibraries } from "./analizeLibraries";
 async function getProjectDeps() {
   const packageJson = await readFileAsync("./package.json", "utf8");
   const parsedPackageJson = JSON.parse(packageJson);
-  const dependencies = parsedPackageJson.dependencies;
-  const devDependencies = parsedPackageJson.devDependencies;
-  return { ...dependencies, ...devDependencies } as Record<string, string>;
+  const allDeps = {
+    ...parsedPackageJson.dependencies,
+    ...parsedPackageJson.devDependencies,
+  } as Record<string, string>;
+  for (const dep in allDeps) {
+    allDeps[dep] = allDeps[dep].replace("^", "").replace("~", "");
+  }
+  return allDeps;
 }
 
 export async function analyzeAllDeps() {
