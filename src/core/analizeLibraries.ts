@@ -5,5 +5,5 @@ import { EvaluationExecutor } from "./executor/executor";
 export async function analyzeLibraries(libraries: Library[]) {
   const indicatorRegistry = await buildRegistry();
   const executor = new EvaluationExecutor(indicatorRegistry, libraries);
-  executor.analizeLibraries();
+  await executor.analizeLibraries();
 }

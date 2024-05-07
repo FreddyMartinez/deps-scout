@@ -1,11 +1,13 @@
-import { libraryBuilder } from "../models/libraryBuilder";
+import { Library } from "../models/library";
 import { analyzeLibraries } from "./analizeLibraries";
 
 export async function analyzeOneLibrary(lib: string, version?: string) {
-  const libInstance = await libraryBuilder.buildLibraryInstance(lib, version);
+  const library: Library = {
+    name: lib,
+    usedVersion: version,
+  };
 
-  if (!libInstance) return;
-  await analyzeLibraries([libInstance]);
-  console.log(libInstance);
+  await analyzeLibraries([library]);
+  console.log(library);
 }
 
