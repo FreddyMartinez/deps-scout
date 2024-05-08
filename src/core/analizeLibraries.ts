@@ -6,4 +6,5 @@ export async function analyzeLibraries(libraries: Library[]) {
   const indicatorRegistry = await buildRegistry();
   const executor = new EvaluationExecutor(indicatorRegistry, libraries);
   await executor.analizeLibraries();
+  executor.showResults();
 }

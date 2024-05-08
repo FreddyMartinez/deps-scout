@@ -1,4 +1,4 @@
-import { printRed, printYellow } from "../../util/utilityFunctions";
+import { printGreen, printRed, printYellow } from "../../util/utilityFunctions";
 import { ResultsStore } from "../executor/resultsStore";
 import { IndicatorStatus } from "../indicators/indicators.types";
 
@@ -19,6 +19,7 @@ export class ConsoleExecutionContext implements ExecutionContext {
   }
 
   showResults(results: ResultsStore) {
+    printGreen(`Analysis result for library: ${results.library.name}`);
     for (const indicator of results.keys) {
       this.printConsoleIndicatorResult(results, indicator);
     }

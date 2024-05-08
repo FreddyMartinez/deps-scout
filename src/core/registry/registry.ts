@@ -9,7 +9,6 @@ import { StopConditions } from "./config.types";
 
 export class IndicatorsRegistry {
   private indicators = new Map<string, Indicator>();
-  private resultStore: ResultsStore;
   private indicatorsToEvaluate: string[];
   private stopConditions?: StopConditions;
 
@@ -41,29 +40,31 @@ export class IndicatorsRegistry {
     indicator.setThresholds?.(thresholds);
   }
 
-  setResultsStore(results: ResultsStore) {
-    this.resultStore = results;
+  getIndicatorParams(name: string) {
+    const indicator = this.indicators.get(name);
+    if (!indicator) return;
+    return indicator.parameters;
   }
 
-  evaluateIndicator(name: string) {
+  evaluateIndicator(name: string, resultStore: ResultsStore) {
     const indicator = this.indicators.get(name);
     if (!indicator) return { status: IndicatorStatus.NOT_FOUND };
 
-    const shouldEvaluate = this.meetsPreconditions(indicator.preconditions);
+    const shouldEvaluate = this.meetsPreconditions(indicator.preconditions, resultStore);
     if (!shouldEvaluate) return { status: IndicatorStatus.NON_EVALUABLE }; 
 
-    const result = indicator.evaluate(this.resultStore.library);
-    this.resultStore.setIndicatorResult(name, result);
+    const result = indicator.evaluate(resultStore.library);
+    resultStore.setIndicatorResult(name, result);
     return result;
   }
 
-  private meetsPreconditions(preconditions: IndicatorPrecondition[]) {
+  private meetsPreconditions(preconditions: IndicatorPrecondition[], resultStore: ResultsStore) {
     if(!preconditions) return true;
 
     for (const precondition of preconditions) {
       const result =
-        this.resultStore.getIndicatorResult(precondition.metricName) ||
-        this.evaluateIndicator(precondition.metricName);
+        resultStore.getIndicatorResult(precondition.metricName) ||
+        this.evaluateIndicator(precondition.metricName, resultStore);
       if (result.status != precondition.status) {
         return false;
       }
@@ -71,12 +72,12 @@ export class IndicatorsRegistry {
     return true;
   }
 
-  meetsStopConditions(indicator: string, status: IndicatorStatus) {
+  meetsStopConditions(indicator: string, status: IndicatorStatus, resultStore: ResultsStore) {
     if (!this.stopConditions) return false;
 
     if (
       typeof this.stopConditions.maxAlerts === "number" &&
-      this.resultStore.alerts > this.stopConditions.maxAlerts
+      resultStore.alerts > this.stopConditions.maxAlerts
     ) {
       return true;
     }

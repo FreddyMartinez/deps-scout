@@ -1,6 +1,5 @@
 import { Library } from "../../models/library";
 import { libraryBuilder } from "../../models/libraryBuilder";
-import { printGreen } from "../../util/utilityFunctions";
 import { ConsoleExecutionContext, ExecutionContext } from "../ctx/executionContext";
 import { IndicatorsRegistry } from "../registry/registry";
 import { ResultsStore } from "./resultsStore";
@@ -14,35 +13,38 @@ export class EvaluationExecutor {
   ctx: ExecutionContext;
   registry: IndicatorsRegistry;
   libraries: Library[];
-  executionStatus: ExecutionStatus;
+  results = new Map<string, ResultsStore>();
 
   constructor(registry: IndicatorsRegistry, libraries: Library[]) {
     this.registry = registry;
     this.libraries = libraries;
+    this.ctx = new ConsoleExecutionContext();
   }
 
   async analizeLibraries() {
-    await Promise.all(this.libraries.map(this.buildLibrary));
-    this.ctx = new ConsoleExecutionContext();
-    for (const library of this.libraries) {
-      printGreen(`Analyzing library: ${library.name}`);  
-      const result = new ResultsStore(library);
-      this.registry.setResultsStore(result);
-      this.evaluateIndicators();
+    await Promise.all(
+      this.libraries.map((lib) => this.evaluateIndicators(lib))
+    );
+  }
+
+  showResults() {
+    for (const result of this.results.values()) {
       this.ctx.showResults(result);
     }
   }
 
-  evaluateIndicators() {
+  async evaluateIndicators(library: Library) {
+    const results = new ResultsStore(library);
     for (const indicator of this.registry.desiredIndicators) {
-      // get indicator properties and check if available
-      // if not, use the builder to add them
-      const result = this.registry.evaluateIndicator(indicator);
-      if (this.registry.meetsStopConditions(indicator, result.status)) break;
+      const params = this.registry.getIndicatorParams(indicator);
+      if (!params) continue;
+      // check if library has required params, if not, use the builder/director to add them
+      if(params.some(param => !library[param])) {
+        await libraryBuilder.addLibraryParams(library);
+      }
+      const result = this.registry.evaluateIndicator(indicator, results);
+      if (this.registry.meetsStopConditions(indicator, result.status, results)) break;
     }
-  }
-
-  async buildLibrary(library: Library) {
-    await libraryBuilder.addLibraryParams(library);
+    this.results.set(library.name, results);
   }
 }
