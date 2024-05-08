@@ -3,6 +3,7 @@ import { Indicator, IndicatorResult, IndicatorThresholds } from "./indicators.ty
 
 export abstract class IndicatorWithThresholds implements Indicator {
   abstract name: string;
+  abstract parameters: Array<keyof Library>;
   protected warningThreshold: number;
   protected alertThreshold: number;
 

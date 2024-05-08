@@ -8,6 +8,7 @@ import { IndicatorWithThresholds } from "./baseIndicator";
 
 class DownloadsIndicator extends IndicatorWithThresholds {
   name = IS_DOWNLOADED_FREQUENTLY;
+  parameters: Array<keyof Library> = ["weeklyDownloads"];
   protected warningThreshold = 10000;
   protected alertThreshold = 100;
 
@@ -36,6 +37,7 @@ class DownloadsIndicator extends IndicatorWithThresholds {
 
 class StarsIndicator extends IndicatorWithThresholds {
   name = IS_STARRED_REPO;
+  parameters: Array<keyof Library> = ["repoStars"];
   protected warningThreshold = 500;
   protected alertThreshold = 100;
 

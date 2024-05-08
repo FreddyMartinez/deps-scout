@@ -17,6 +17,7 @@ import { IndicatorWithThresholds } from "./baseIndicator";
  */
 class ReleasedRecentlyIndicator extends IndicatorWithThresholds {
   name = WAS_RELEASED_RECENTLY;
+  parameters: Array<keyof Library> = ["lastVersionDate"];
   protected warningThreshold = 90; // days since last release
   protected alertThreshold = 365;
 
@@ -52,6 +53,7 @@ class ReleasedRecentlyIndicator extends IndicatorWithThresholds {
  */
 class ReleaseFrequencyIndicator extends IndicatorWithThresholds {
   name = IS_RELEASED_FREQUENTLY;
+  parameters: Array<keyof Library> = ["releaseFrequency"];
   protected warningThreshold = 10; // days between releases
   protected alertThreshold = 30;
 

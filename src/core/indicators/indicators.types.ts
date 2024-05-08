@@ -25,6 +25,7 @@ export type Indicator = {
   name: string;
   evaluate: (lib: Library) => IndicatorResult;
   message: string | ((...data: unknown[]) => string);
+  parameters: Array<keyof Library>;
   preconditions?: Array<IndicatorPrecondition>;
   setThresholds?: (thresholds: IndicatorThresholds) => void;
 };

@@ -8,6 +8,8 @@ import {
 
 class SameVersionIndicator implements Indicator {
   name = IS_LAST_VERSION;
+  parameters: Array<keyof Library> = ["lastVersion", "usedVersion"];
+
   evaluate(library: Library) {
     const status =
       library.lastVersion === library.usedVersion
@@ -24,6 +26,7 @@ class SameVersionIndicator implements Indicator {
 
 class SameMajorVersionIndicator implements Indicator {
   name = IS_SAME_MAJOR_VERSION;
+  parameters: Array<keyof Library> = ["lastVersion", "usedVersion"];
   preconditions = [
     { metricName: IS_LAST_VERSION, status: IndicatorStatus.WARNING },
   ];
@@ -46,6 +49,7 @@ class SameMajorVersionIndicator implements Indicator {
 
 class SameMinorVersion implements Indicator {
   name = IS_SAME_MINOR_VERSION;
+  parameters: Array<keyof Library> = ["lastVersion", "usedVersion"];
   preconditions = [
     { metricName: IS_LAST_VERSION, status: IndicatorStatus.WARNING },
     { metricName: IS_SAME_MAJOR_VERSION, status: IndicatorStatus.OK },
