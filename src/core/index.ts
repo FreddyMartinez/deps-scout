@@ -1,2 +1,1 @@
-export * from "./analizeAllDeps";
-export * from "./analizeOneLibrary";
+export * from "./analizeLibraries";

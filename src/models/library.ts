@@ -1,5 +1,6 @@
 export type Library = {
   name: string;
+  usedVersion: string;
 } & Partial<{
   // Properties from npm
   repoName: string;
@@ -7,7 +8,6 @@ export type Library = {
   numberOfVersions: number;
   weeklyDownloads: number;
   lastVersion: string;
-  usedVersion: string;
   lastVersionDate: Date;
   lifeSpan: number;
   releaseFrequency: number;

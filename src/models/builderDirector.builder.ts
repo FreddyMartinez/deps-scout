@@ -1,5 +1,5 @@
 import { BuilderDirector } from "./builderDirector";
-import { GITHUB, GITHUB_COMUNITY, NPM } from "./libParam.types";
+import { GITHUB, GITHUB_COMUNITY, NPM } from "./libParam";
 import { GithubBuilder, NpmBuilder } from "./libraryBuilder";
 
 function createJavascriptBuilder() {

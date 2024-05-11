@@ -1,4 +1,4 @@
-import { LibParam, Source } from "./libParam.types";
+import { LibParam, Source } from "./libParam";
 import { Library } from "./library";
 import { LibraryBuilder } from "./libraryBuilder";
 
