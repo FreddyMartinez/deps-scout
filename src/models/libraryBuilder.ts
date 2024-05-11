@@ -11,7 +11,7 @@ export interface LibraryBuilder {
   addLibraryParams(lib: Library): Promise<void>;
 }
 
-class NpmBuilder implements LibraryBuilder {
+export class NpmBuilder implements LibraryBuilder {
   async addLibraryParams(library: Library) {
     try {
       const [npmData, npmDownloads] = await Promise.all([
@@ -50,7 +50,7 @@ class NpmBuilder implements LibraryBuilder {
   }
 }
 
-class GithubBuilder implements LibraryBuilder {
+export class GithubBuilder implements LibraryBuilder {
   async addLibraryParams(library: Library) {
     const [repoData, repoProfile] = await Promise.all([
       getRepoData(library.repoOwner, library.name),
@@ -72,6 +72,3 @@ class GithubBuilder implements LibraryBuilder {
     }
   }
 }
-
-export const libraryBuilder = new NpmBuilder();
-export const githubBuilder = new GithubBuilder();
