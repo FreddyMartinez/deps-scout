@@ -14,18 +14,12 @@ export interface LibraryBuilder {
 export class NpmBuilder implements LibraryBuilder {
   async addLibraryParams(library: Library) {
     try {
-      const [npmData, npmDownloads] = await Promise.all([
-        getNpmData(library.name),
-        getNpmDownloads(library.name),
-      ]);
-  
-      library.numberOfVersions = npmData.versions.length,
-      library.lastVersion = npmData.version,
-      
+      const npmData = await getNpmData(library.name);
+
+      library.numberOfVersions = npmData.versions.length;
+      library.lastVersion = npmData.version;
       this.setOwnerAndRepo(library, npmData.repository.url);
       this.setTimeRelatedAttributes(library, npmData.time);
-
-      if (npmDownloads) library.weeklyDownloads = npmDownloads.downloads || 1;
     } catch (error) {
       logErrors(error);
     }
@@ -46,27 +40,43 @@ export class NpmBuilder implements LibraryBuilder {
     library.lastVersionDate = new Date(npmTime.modified);
     library.lifeSpan =
       (Date.now() - createdDate.getTime()) / (1000 * 60 * 60 * 24);
-      library.releaseFrequency = library.numberOfVersions / library.lifeSpan;
+    library.releaseFrequency = library.numberOfVersions / library.lifeSpan;
+  }
+}
+
+export class NpmDownloadsBuilder implements LibraryBuilder {
+  async addLibraryParams(library: Library) {
+    const npmDownloads = await getNpmDownloads(library.name);
+    if (npmDownloads) library.weeklyDownloads = npmDownloads.downloads || 1;
   }
 }
 
 export class GithubBuilder implements LibraryBuilder {
   async addLibraryParams(library: Library) {
-    const [repoData, repoProfile] = await Promise.all([
-      getRepoData(library.repoOwner, library.name),
-      getRepoCommunityProfile(library.repoOwner, library.name),
-    ]);
-  
+    const repoData = await getRepoData(library.repoOwner, library.name);
+
     if (isTypeOf<GithubExcededRateLimit>(repoData, "message")) {
-      console.log(`Error getting GitHub data: ${repoData.message}`);
+      console.log(
+        `Error getting GitHub data for ${library.name}: ${repoData.message}`
+      );
       return;
     } else if (repoData) {
-      library.repoOpenIssues = repoData.open_issues_count || repoData.open_issues;
+      library.repoOpenIssues =
+        repoData.open_issues_count || repoData.open_issues;
       library.repoStars = repoData.stargazers_count || 1;
       library.repoForks = repoData.forks_count || repoData.forks;
       library.repoObservers = repoData.subscribers_count;
       library.repoOwnerType = repoData.owner?.type;
     }
+  }
+}
+
+export class GithubCommunityBuilder implements LibraryBuilder {
+  async addLibraryParams(library: Library) {
+    const repoProfile = await getRepoCommunityProfile(
+      library.repoOwner,
+      library.name
+    );
     if (repoProfile) {
       library.repoHealth = repoProfile.health_percentage;
     }

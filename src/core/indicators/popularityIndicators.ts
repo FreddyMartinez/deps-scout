@@ -42,10 +42,6 @@ class StarsIndicator extends IndicatorWithThresholds {
   protected alertThreshold = 100;
 
   evaluate(library: Library) {
-    if (!library.repoStars) {
-      library.repoStars = 1;
-    }
-
     const status =
       library.repoStars > this.warningThreshold
         ? IndicatorStatus.OK

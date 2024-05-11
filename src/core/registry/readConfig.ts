@@ -1,15 +1,22 @@
 import { readFileAsync } from "../../util/readFileAsync";
+import {
+  IS_DOWNLOADED_FREQUENTLY,
+  IS_LAST_VERSION,
+  IS_RELEASED_FREQUENTLY,
+  IS_SAME_MAJOR_VERSION,
+  IS_SAME_MINOR_VERSION,
+  WAS_RELEASED_RECENTLY,
+} from "../indicators/indicators.constants";
 import { ScoutConfig } from "./config.types";
 
 const defaultConfig: ScoutConfig = {
   indicators: [
-    "is-last-version",
-    "is-same-major-version",
-    "is-same-minor-version",
-    "was-released-recently",
-    "is-released-frequently",
-    "is-downloaded-frequently",
-    "is-starred-repo",
+    IS_LAST_VERSION,
+    IS_SAME_MAJOR_VERSION,
+    IS_SAME_MINOR_VERSION,
+    WAS_RELEASED_RECENTLY,
+    IS_RELEASED_FREQUENTLY,
+    IS_DOWNLOADED_FREQUENTLY,
   ],
 };
 
