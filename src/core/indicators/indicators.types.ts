@@ -33,4 +33,5 @@ export type Indicator = {
 export type IndicatorThresholds = {
   warningThreshold: number;
   alertThreshold: number;
+  requiredValue?: string;
 };

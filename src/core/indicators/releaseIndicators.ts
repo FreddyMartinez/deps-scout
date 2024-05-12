@@ -5,6 +5,7 @@ import {
 } from "../../util/constants";
 import { IndicatorStatus } from "./indicators.types";
 import {
+  IS_LONG_LIVING_PROJECT,
   IS_RELEASED_FREQUENTLY,
   WAS_RELEASED_RECENTLY,
 } from "./constants";
@@ -77,5 +78,41 @@ class ReleaseFrequencyIndicator extends IndicatorWithThresholds {
     timeBetweenReleasesMessage(Math.round(1 / frequency));
 }
 
+/**
+ * Indicator that checks the library creation date.
+ */
+class LifeSpanIndicator extends IndicatorWithThresholds {
+  name = IS_LONG_LIVING_PROJECT;
+  parameters: Array<keyof Library> = ["lifeSpan"];
+  protected warningThreshold = 365; // days since creation
+  protected alertThreshold = 180;
+
+  evaluate(library: Library) {
+
+    const status =
+      library.lifeSpan > this.warningThreshold
+        ? IndicatorStatus.OK
+        : library.lifeSpan > this.alertThreshold
+        ? IndicatorStatus.WARNING
+        : IndicatorStatus.ALERT;
+
+    const score = Math.min(1, library.lifeSpan / this.warningThreshold);
+    return {
+      status,
+      value: {
+        score,
+        message: this.message(library.lifeSpan),
+      },
+    };
+  }
+
+  message = (timeSinceFirstRelease: number) => {
+    return `The library was created ${Math.round(
+      timeSinceFirstRelease
+    )} days ago.`;
+  };
+}
+
 export const wasReleasedRecently = new ReleasedRecentlyIndicator();
 export const isReleasedFrequently = new ReleaseFrequencyIndicator();
+export const isLongLivingProject = new LifeSpanIndicator();

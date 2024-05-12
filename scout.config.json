@@ -6,7 +6,13 @@
     "was-released-recently",
     "is-released-frequently",
     "is-downloaded-frequently",
-    "is-starred-repo"
+    "is-long-living-project",
+    "is-starred-repo",
+    "has-open-issues",
+    "has-forks",
+    "has-enough-observers",
+    "repo-owner-type",
+    "is-healthy-repo"
   ],
   "thresholds": {
     "is-released-frequently": {
