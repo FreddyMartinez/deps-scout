@@ -14,6 +14,8 @@ const printWithColor = (color: string) => (message: string) => {
 export const printRed = printWithColor("31m");
 export const printGreen = printWithColor("32m");
 export const printYellow = printWithColor("33m");
+export const printBlue = printWithColor("34m");
+export const printBgRed = printWithColor("41m");
 export const printBgYellow = printWithColor("43m");
 export const printBgWhite = printWithColor("47m");
 

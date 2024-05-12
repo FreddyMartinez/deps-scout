@@ -1,9 +1,15 @@
-import { printGreen, printRed, printYellow } from "../../util/utilityFunctions";
+import {
+  printBgRed,
+  printBlue,
+  printRed,
+  printYellow,
+} from "../../util/utilityFunctions";
 import { ResultsStore } from "../executor/resultsStore";
 import { IndicatorStatus } from "../indicators/indicators.types";
 
 export interface ExecutionContext {
   showResults: (results: ResultsStore) => void;
+  showError: (error: unknown) => void;
 }
 
 export class ConsoleExecutionContext implements ExecutionContext {
@@ -19,9 +25,13 @@ export class ConsoleExecutionContext implements ExecutionContext {
   }
 
   showResults(results: ResultsStore) {
-    printGreen(`Analysis result for library: ${results.library.name}`);
+    printBlue(`Analysis result for library: ${results.library.name}`);
     for (const indicator of results.keys) {
       this.printConsoleIndicatorResult(results, indicator);
     }
+  }
+
+  showError(error: unknown) {
+    if (error instanceof Error) printBgRed(error.message);
   }
 }

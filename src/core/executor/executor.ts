@@ -1,6 +1,5 @@
 import { BuilderDirector } from "../../models/builderDirector";
 import { Library } from "../../models/library";
-import { logErrors } from "../../util/utilityFunctions";
 import { ConsoleExecutionContext, ExecutionContext } from "../ctx/executionContext";
 import { IndicatorsRegistry } from "../registry/registry";
 import { ResultsStore } from "./resultsStore";
@@ -49,7 +48,7 @@ export class EvaluationExecutor {
           }
         }
       } catch (error) {
-        logErrors(error);
+        this.ctx.showError(error);
         break;
       }
       const result = this.registry.evaluateIndicator(indicator, results);
