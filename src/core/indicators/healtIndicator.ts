@@ -24,7 +24,7 @@ class RepoHealthIndicator extends IndicatorWithThresholds {
       status,
       value: {
         score: library.repoHealth / 100,
-        message: this.message(library.releaseFrequency),
+        message: this.message(library.repoHealth),
       },
     };
   }

@@ -4,7 +4,7 @@ import {
   getRepoCommunityProfile,
   getRepoData,
 } from "../services/getGithubData";
-import { isTypeOf, logErrors } from "../util/utilityFunctions";
+import { isTypeOf } from "../util/utilityFunctions";
 import { githubUrlRegex } from "../util/constants";
 
 export interface LibraryBuilder {
@@ -13,16 +13,12 @@ export interface LibraryBuilder {
 
 export class NpmBuilder implements LibraryBuilder {
   async addLibraryParams(library: Library) {
-    try {
-      const npmData = await getNpmData(library.name);
+    const npmData = await getNpmData(library.name);
 
-      library.numberOfVersions = npmData.versions.length;
-      library.lastVersion = npmData.version;
-      this.setOwnerAndRepo(library, npmData.repository.url);
-      this.setTimeRelatedAttributes(library, npmData.time);
-    } catch (error) {
-      logErrors(error);
-    }
+    library.numberOfVersions = npmData.versions.length;
+    library.lastVersion = npmData.version;
+    this.setOwnerAndRepo(library, npmData.repository.url);
+    this.setTimeRelatedAttributes(library, npmData.time);
   }
 
   private setOwnerAndRepo(library: Library, url: string) {
@@ -53,7 +49,7 @@ export class NpmDownloadsBuilder implements LibraryBuilder {
 
 export class GithubBuilder implements LibraryBuilder {
   async addLibraryParams(library: Library) {
-    const repoData = await getRepoData(library.repoOwner, library.name);
+    const repoData = await getRepoData(library.repoOwner, library.repoName);
 
     if (isTypeOf<GithubExcededRateLimit>(repoData, "message")) {
       throw new Error(`Error getting GitHub data for ${library.name}: ${repoData.message}`);
@@ -72,7 +68,7 @@ export class GithubCommunityBuilder implements LibraryBuilder {
   async addLibraryParams(library: Library) {
     const repoProfile = await getRepoCommunityProfile(
       library.repoOwner,
-      library.name
+      library.repoName
     );
     if (repoProfile) {
       library.repoHealth = repoProfile.health_percentage;

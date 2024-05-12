@@ -11,9 +11,4 @@ export type Source =
   | typeof NPM_DOWNLOADS
   | typeof MAVEN;
 
-export type ParamStatus = "OK" | "ERROR" | "MISSING";
-
-export type LibParam = {
-  status: ParamStatus;
-  source: Source;
-}
+export type LibSourceStatus = "OK" | "ERROR" | "MISSING";

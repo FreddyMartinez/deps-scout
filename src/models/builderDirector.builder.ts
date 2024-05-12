@@ -13,26 +13,20 @@ function createJavascriptBuilder() {
   jsbuilder.addBuilder(NPM_DOWNLOADS, new NpmDownloadsBuilder());
   jsbuilder.addBuilder(GITHUB, new GithubBuilder());
   jsbuilder.addBuilder(GITHUB_COMUNITY, new GithubCommunityBuilder());
-  jsbuilder.addParam("repoName", { source: NPM, status: "MISSING" });
-  jsbuilder.addParam("repoOwner", { source: NPM, status: "MISSING" });
-  jsbuilder.addParam("numberOfVersions", { source: NPM, status: "MISSING" });
-  jsbuilder.addParam("weeklyDownloads", {
-    source: NPM_DOWNLOADS,
-    status: "MISSING",
-  });
-  jsbuilder.addParam("lastVersion", { source: NPM, status: "MISSING" });
-  jsbuilder.addParam("lastVersionDate", { source: NPM, status: "MISSING" });
-  jsbuilder.addParam("lifeSpan", { source: NPM, status: "MISSING" });
-  jsbuilder.addParam("releaseFrequency", { source: NPM, status: "MISSING" });
-  jsbuilder.addParam("repoOpenIssues", { source: GITHUB, status: "MISSING" });
-  jsbuilder.addParam("repoStars", { source: GITHUB, status: "MISSING" });
-  jsbuilder.addParam("repoForks", { source: GITHUB, status: "MISSING" });
-  jsbuilder.addParam("repoObservers", { source: GITHUB, status: "MISSING" });
-  jsbuilder.addParam("repoOwnerType", { source: GITHUB, status: "MISSING" });
-  jsbuilder.addParam("repoHealth", {
-    source: GITHUB_COMUNITY,
-    status: "MISSING",
-  });
+  jsbuilder.addParam("repoName", NPM);
+  jsbuilder.addParam("repoOwner", NPM);
+  jsbuilder.addParam("numberOfVersions", NPM);
+  jsbuilder.addParam("weeklyDownloads", NPM_DOWNLOADS);
+  jsbuilder.addParam("lastVersion", NPM);
+  jsbuilder.addParam("lastVersionDate", NPM);
+  jsbuilder.addParam("lifeSpan", NPM);
+  jsbuilder.addParam("releaseFrequency", NPM);
+  jsbuilder.addParam("repoOpenIssues", GITHUB);
+  jsbuilder.addParam("repoStars", GITHUB);
+  jsbuilder.addParam("repoForks", GITHUB);
+  jsbuilder.addParam("repoObservers", GITHUB);
+  jsbuilder.addParam("repoOwnerType", GITHUB);
+  jsbuilder.addParam("repoHealth", GITHUB_COMUNITY);
   return jsbuilder;
 }
 

@@ -1,6 +1,9 @@
+import { LibSourceStatus } from "./libParam";
+
 export type Library = {
   name: string;
   usedVersion: string;
+  sourceStatus: Map<string, LibSourceStatus>;
 } & Partial<{
   // Properties from npm
   repoName: string;

@@ -16,6 +16,7 @@ export async function analyzeOneLibrary(language: string, lib: string, version?:
   const library: Library = {
     name: lib,
     usedVersion: version,
+    sourceStatus: new Map(),
   };
 
   await analyzeLibraries([library], language);
@@ -27,12 +28,17 @@ export async function analyzeAllDeps(language: string) {
     // refactor this to support different languages and registries
     const dependencies = await getProjectDeps();
     const libNames = Object.keys(dependencies);
-    const libInstances = libNames.map((lib) => ({
+    const libInstances: Library[] = libNames.map((lib) => ({
       name: lib,
       usedVersion: dependencies[lib],
-    } as Library));
+      sourceStatus: new Map(),
+    }));
 
     await analyzeLibraries(libInstances, language);
+
+    for (const lib of libInstances) {
+      delete lib.sourceStatus;
+    }
     console.table(libInstances);
   } catch (error) {
     if (error instanceof Error) console.error(error.message);

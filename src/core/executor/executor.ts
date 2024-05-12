@@ -1,4 +1,5 @@
 import { BuilderDirector } from "../../models/builderDirector";
+import { LibSourceStatus } from "../../models/libParam";
 import { Library } from "../../models/library";
 import { ConsoleExecutionContext, ExecutionContext } from "../ctx/executionContext";
 import { IndicatorsRegistry } from "../registry/registry";
@@ -40,20 +41,32 @@ export class EvaluationExecutor {
     for (const indicator of this.registry.desiredIndicators) {
       const params = this.registry.getIndicatorParams(indicator);
       if (!params) continue;
-      // check if library has required params, if not, use the builder/director to add them
+
       try {
-        for(const param of params) {
-          if (!library[param]) {
-            await this.builderDir.buildLibrary(param, library);
-          }
+        const sourceAlreadyAdded = await this.checkParams(params, library);
+        if (sourceAlreadyAdded === "ERROR") {
+          continue;
         }
       } catch (error) {
         this.ctx.showError(error);
-        break;
+        continue;
       }
       const result = this.registry.evaluateIndicator(indicator, results);
       if (this.registry.meetsStopConditions(indicator, result.status, results)) break;
     }
     this.results.set(library.name, results);
+  }
+
+  /* Checks if library has required params, if not, use the builder/director to add them
+  *  returns the status of the source
+  */
+  async checkParams(params: Array<keyof Library>, library: Library) {
+    let sourceAlreadyAdded: LibSourceStatus;
+    for(const param of params) {
+      if (!library[param]) {
+        sourceAlreadyAdded = await this.builderDir.buildLibrary(param, library);
+      }
+    }
+    return sourceAlreadyAdded;
   }
 }
