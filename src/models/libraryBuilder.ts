@@ -56,10 +56,7 @@ export class GithubBuilder implements LibraryBuilder {
     const repoData = await getRepoData(library.repoOwner, library.name);
 
     if (isTypeOf<GithubExcededRateLimit>(repoData, "message")) {
-      console.log(
-        `Error getting GitHub data for ${library.name}: ${repoData.message}`
-      );
-      return;
+      throw new Error(`Error getting GitHub data for ${library.name}: ${repoData.message}`);
     } else if (repoData) {
       library.repoOpenIssues =
         repoData.open_issues_count || repoData.open_issues;

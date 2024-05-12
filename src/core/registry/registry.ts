@@ -77,7 +77,7 @@ export class IndicatorsRegistry {
 
     if (
       typeof this.stopConditions.maxAlerts === "number" &&
-      resultStore.alerts > this.stopConditions.maxAlerts
+      resultStore.alerts >= this.stopConditions.maxAlerts
     ) {
       return true;
     }
