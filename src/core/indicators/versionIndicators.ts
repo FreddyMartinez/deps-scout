@@ -4,7 +4,7 @@ import {
   IS_LAST_VERSION,
   IS_SAME_MAJOR_VERSION,
   IS_SAME_MINOR_VERSION,
-} from "./indicators.constants";
+} from "./constants";
 
 class SameVersionIndicator implements Indicator {
   name = IS_LAST_VERSION;

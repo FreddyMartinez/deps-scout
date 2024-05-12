@@ -7,7 +7,7 @@ import { IndicatorStatus } from "./indicators.types";
 import {
   IS_RELEASED_FREQUENTLY,
   WAS_RELEASED_RECENTLY,
-} from "./indicators.constants";
+} from "./constants";
 import { IndicatorWithThresholds } from "./baseIndicator";
 
 /**

@@ -3,7 +3,7 @@ import { IndicatorStatus } from "./indicators.types";
 import {
   IS_DOWNLOADED_FREQUENTLY,
   IS_STARRED_REPO,
-} from "./indicators.constants";
+} from "./constants";
 import { IndicatorWithThresholds } from "./baseIndicator";
 
 class DownloadsIndicator extends IndicatorWithThresholds {

@@ -6,7 +6,7 @@ import {
   IS_SAME_MAJOR_VERSION,
   IS_SAME_MINOR_VERSION,
   WAS_RELEASED_RECENTLY,
-} from "../indicators/indicators.constants";
+} from "../indicators/constants";
 import { ScoutConfig } from "./config.types";
 
 const defaultConfig: ScoutConfig = {
