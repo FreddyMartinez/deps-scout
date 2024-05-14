@@ -3,8 +3,8 @@ import { Library } from "./library";
 import { LibraryBuilder } from "./libraryBuilder";
 
 export class BuilderDirector {
-  params = new Map<keyof Library, Source>();
-  builders = new Map<Source, LibraryBuilder>();
+  private params = new Map<keyof Library, Source>();
+  private builders = new Map<Source, LibraryBuilder>();
 
   addBuilder(source: Source, builder: LibraryBuilder) {
     this.builders.set(source, builder);
