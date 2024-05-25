@@ -1,6 +1,7 @@
 import {
   printBgRed,
-  printBlue,
+  printCyan,
+  printPurple,
   printRed,
   printYellow,
 } from "../../util/utilityFunctions";
@@ -25,9 +26,12 @@ export class ConsoleExecutionContext implements ExecutionContext {
   }
 
   showResults(results: ResultsStore) {
-    printBlue(`Analysis result for library: ${results.library.name}`);
+    printCyan(`Analysis result for library: ${results.library.name}`);
     for (const indicator of results.keys) {
       this.printConsoleIndicatorResult(results, indicator);
+    }
+    if (results.evaluationStopReason) {
+      printPurple(`Evaluation was stopped: ${results.evaluationStopReason}`);
     }
   }
 

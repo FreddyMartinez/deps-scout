@@ -4,6 +4,7 @@ import { IndicatorResult, IndicatorStatus } from "../indicators/indicators.types
 export class ResultsStore {
   private lib: Library;
   private results = new Map<string, IndicatorResult>();
+  private evaluationStop?: string;
 
   constructor(library: Library) {
     this.lib = library;
@@ -25,11 +26,19 @@ export class ResultsStore {
     }, 0);
   }
 
+  get evaluationStopReason() {
+    return this.evaluationStop;
+  }
+
   setIndicatorResult(name: string, result: IndicatorResult) {
     this.results.set(name, result);
   }
 
   getIndicatorResult(name: string) {
     return this.results.get(name);
+  }
+
+  setStopReason(reason: string) {
+    this.evaluationStop = reason;
   }
 }

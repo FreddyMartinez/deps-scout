@@ -52,7 +52,15 @@ export class EvaluationExecutor {
         continue;
       }
       const result = this.registry.evaluateIndicator(indicator, results);
-      if (this.registry.meetsStopConditions(indicator, result.status, results)) break;
+      const stopEvalutation = this.registry.meetsStopConditions(
+        indicator,
+        result.status,
+        results
+      );
+      if (stopEvalutation.stop) {
+        results.setStopReason(stopEvalutation.condition);
+        break;
+      }
     }
     this.results.set(library.name, results);
   }

@@ -33,7 +33,10 @@ export class IndicatorsRegistry {
     this.stopConditions = conditions;
   }
 
-  setIndicatorThreshold(indicatorName: string, thresholds: IndicatorThresholds) {
+  setIndicatorThreshold(
+    indicatorName: string,
+    thresholds: IndicatorThresholds
+  ) {
     const indicator = this.indicators.get(indicatorName);
     if (!indicator) return;
 
@@ -50,16 +53,22 @@ export class IndicatorsRegistry {
     const indicator = this.indicators.get(name);
     if (!indicator) return { status: IndicatorStatus.NOT_FOUND };
 
-    const shouldEvaluate = this.meetsPreconditions(indicator.preconditions, resultStore);
-    if (!shouldEvaluate) return { status: IndicatorStatus.NON_EVALUABLE }; 
+    const shouldEvaluate = this.meetsPreconditions(
+      indicator.preconditions,
+      resultStore
+    );
+    if (!shouldEvaluate) return { status: IndicatorStatus.NON_EVALUABLE };
 
     const result = indicator.evaluate(resultStore.library);
     resultStore.setIndicatorResult(name, result);
     return result;
   }
 
-  private meetsPreconditions(preconditions: IndicatorPrecondition[], resultStore: ResultsStore) {
-    if(!preconditions) return true;
+  private meetsPreconditions(
+    preconditions: IndicatorPrecondition[],
+    resultStore: ResultsStore
+  ) {
+    if (!preconditions) return true;
 
     for (const precondition of preconditions) {
       const result =
@@ -72,14 +81,18 @@ export class IndicatorsRegistry {
     return true;
   }
 
-  meetsStopConditions(indicator: string, status: IndicatorStatus, resultStore: ResultsStore) {
-    if (!this.stopConditions) return false;
+  meetsStopConditions(
+    indicator: string,
+    status: IndicatorStatus,
+    resultStore: ResultsStore
+  ) {
+    if (!this.stopConditions) return { stop: false };
 
     if (
       typeof this.stopConditions.maxAlerts === "number" &&
       resultStore.alerts >= this.stopConditions.maxAlerts
     ) {
-      return true;
+      return { stop: true, condition: "maxAlerts" };
     }
 
     if (
@@ -87,7 +100,7 @@ export class IndicatorsRegistry {
       this.stopConditions.shallNotAlert.includes(indicator) &&
       status === IndicatorStatus.ALERT
     ) {
-      return true;
+      return { stop: true, condition: "shallNotAlert" };
     }
 
     if (
@@ -95,9 +108,9 @@ export class IndicatorsRegistry {
       this.stopConditions.mustBeOk.includes(indicator) &&
       status !== IndicatorStatus.OK
     ) {
-      return true;
+      return { stop: true, condition: `Indicator ${indicator} must be ok` };
     }
 
-    return false;
+    return { stop: false };
   }
 }
