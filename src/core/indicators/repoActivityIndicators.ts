@@ -70,7 +70,7 @@ class RepoForksIndicator extends IndicatorWithThresholds {
 }
 
 // Checks the number of open issues of the repository
-// @TODO: analize the rate between open and closed issues
+// @TODO: analyze the rate between open and closed issues
 class RepoOpenIssuesIndicator extends IndicatorWithThresholds {
   name = REPO_HAS_OPEN_ISSUES;
   parameters: Array<keyof Library> = ["repoOpenIssues"];

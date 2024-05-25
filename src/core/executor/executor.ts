@@ -24,7 +24,7 @@ export class EvaluationExecutor {
     this.ctx = new ConsoleExecutionContext();
   }
 
-  async analizeLibraries() {
+  async analyzeLibraries() {
     await Promise.all(
       this.libraries.map((lib) => this.evaluateIndicators(lib))
     );

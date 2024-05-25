@@ -28,14 +28,14 @@ describe("executor", () => {
   it("should call the getter for desired indicators in the registry", async () => {
     const executor = createExecutor();
     const spy = jest.spyOn(executor.registry, "desiredIndicators", "get");
-    await executor.analizeLibraries();
+    await executor.analyzeLibraries();
     expect(spy).toHaveBeenCalledTimes(2);
   });
 
   it("should call the evaluateIndicators method once for each library", async () => {
     const executor = createExecutor();
     const spy = jest.spyOn(executor, "evaluateIndicators");
-    await executor.analizeLibraries();
+    await executor.analyzeLibraries();
     expect(spy).toHaveBeenCalledTimes(2);
   });
 

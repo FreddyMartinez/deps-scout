@@ -8,7 +8,7 @@ async function analyzeLibraries(libraries: Library[], language: string = "javasc
   const indicatorRegistry = await buildRegistry();
   const builderDir = createBuilderDirector(language);
   const executor = new EvaluationExecutor(indicatorRegistry, libraries, builderDir);
-  await executor.analizeLibraries();
+  await executor.analyzeLibraries();
   executor.showResults();
 }
 

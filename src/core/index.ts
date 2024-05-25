@@ -1,1 +1,1 @@
-export * from "./analizeLibraries";
+export * from "./analyzeLibraries";

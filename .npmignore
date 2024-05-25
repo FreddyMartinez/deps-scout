@@ -1,6 +1,8 @@
 node_modules
 src
+__tests__
+coverage
 
 # Ignore docs along with any files or directories starting with a dot
-CONTRIBUTING.md
+docs
 .*
