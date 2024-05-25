@@ -111,6 +111,13 @@ export class IndicatorsRegistry {
       return { stop: true, condition: `Indicator ${indicator} must be ok` };
     }
 
+    if (
+      typeof this.stopConditions.maxWarnings === "number" &&
+      resultStore.warnings >= this.stopConditions.maxWarnings
+    ) {
+      return { stop: true, condition: "maxWarnings" };
+    }
+
     return { stop: false };
   }
 }

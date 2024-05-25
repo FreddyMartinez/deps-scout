@@ -4,6 +4,7 @@ import { IndicatorResult, IndicatorStatus } from "../indicators/indicators.types
 export class ResultsStore {
   private lib: Library;
   private results = new Map<string, IndicatorResult>();
+  private counters = { alerts: 0, warnings: 0 };
   private evaluationStop?: string;
 
   constructor(library: Library) {
@@ -20,10 +21,11 @@ export class ResultsStore {
   }
 
   get alerts() {
-    return [...this.results.values()].reduce((acc, result) => {
-      if (result.status === IndicatorStatus.ALERT) acc++;
-      return acc;
-    }, 0);
+    return this.counters.alerts;
+  }
+
+  get warnings() {
+    return this.counters.warnings;
   }
 
   get evaluationStopReason() {
@@ -32,6 +34,8 @@ export class ResultsStore {
 
   setIndicatorResult(name: string, result: IndicatorResult) {
     this.results.set(name, result);
+    if (result.status === IndicatorStatus.ALERT) this.counters.alerts++;
+    if (result.status === IndicatorStatus.WARNING) this.counters.warnings++;
   }
 
   getIndicatorResult(name: string) {
