@@ -35,11 +35,6 @@ export async function analyzeAllDeps(language: string) {
     }));
 
     await analyzeLibraries(libInstances, language);
-
-    for (const lib of libInstances) {
-      delete lib.sourceStatus;
-    }
-    console.table(libInstances);
   } catch (error) {
     if (error instanceof Error) console.error(error.message);
   }

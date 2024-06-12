@@ -1,6 +1,6 @@
 import {
   printBgRed,
-  printCyan,
+  printTitle,
   printPurple,
   printRed,
   printYellow,
@@ -26,7 +26,7 @@ export class ConsoleExecutionContext implements ExecutionContext {
   }
 
   showResults(results: ResultsStore) {
-    printCyan(`Analysis result for library: ${results.library.name}`);
+    printTitle(`Analysis result for library: ${results.library.name}`);
     for (const indicator of results.keys) {
       this.printConsoleIndicatorResult(results, indicator);
     }
