@@ -30,7 +30,8 @@ class SameMajorVersionIndicator implements Indicator {
   preconditions = [
     { metricName: IS_LAST_VERSION, status: IndicatorStatus.WARNING },
   ];
-  message = `The major version of the used library is different from the latest version.`;
+  message = (used: string, latest: string) =>
+    `The used major version is ${used}, but the latest version of the library is ${latest}.`;
 
   evaluate(library: Library) {
     const latestSemVer = library.lastVersion.split(".");
@@ -42,7 +43,10 @@ class SameMajorVersionIndicator implements Indicator {
     const score = status === IndicatorStatus.OK ? 1 : 0;
     return {
       status,
-      value: { score, message: this.message },
+      value: {
+        score,
+        message: this.message(currentSemVer[0], latestSemVer[0]),
+      },
     };
   }
 }
