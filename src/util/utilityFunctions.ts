@@ -25,3 +25,13 @@ export const printBgYellow = printWithColor("43m");
 export const printBgWhite = printWithColor("47m");
 
 export const roundToTwoDecimals = (num: number) => Math.round(num * 100) / 100;
+
+export function showHelp() {
+  console.log(`
+    Usage: either run 'scout' in the root of your project or 'scout <library> <version>'
+
+    Options:
+      -v, --version          output the version number
+      -h, --help             display help for command
+  `);
+}

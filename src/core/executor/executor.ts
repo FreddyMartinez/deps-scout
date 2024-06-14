@@ -1,7 +1,7 @@
 import { BuilderDirector } from "../../models/builderDirector";
 import { LibSourceStatus } from "../../models/libParam";
 import { Library } from "../../models/library";
-import { ConsoleExecutionContext, ExecutionContext } from "../ctx/executionContext";
+import { ExecutionContext } from "../ctx/executionContext";
 import { IndicatorsRegistry } from "../registry/registry";
 import { ResultsStore } from "./resultsStore";
 
@@ -17,11 +17,11 @@ export class EvaluationExecutor {
   libraries: Library[];
   results = new Map<string, ResultsStore>();
 
-  constructor(registry: IndicatorsRegistry, libraries: Library[], builderDir: BuilderDirector) {
+  constructor(registry: IndicatorsRegistry, libraries: Library[], builderDir: BuilderDirector, context: ExecutionContext) {
     this.registry = registry;
     this.libraries = libraries;
     this.builderDir = builderDir;
-    this.ctx = new ConsoleExecutionContext();
+    this.ctx = context;
   }
 
   async analyzeLibraries() {

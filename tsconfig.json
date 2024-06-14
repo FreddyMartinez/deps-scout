@@ -6,6 +6,7 @@
     "rootDir": "src",
     "moduleResolution": "NodeNext",
     "useUnknownInCatchVariables": true,
+    "resolveJsonModule": true
   },
   "exclude": [
     "node_modules",
