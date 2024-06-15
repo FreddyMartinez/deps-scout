@@ -1,6 +1,11 @@
-import { ConsoleExecutionContext } from "./executionContext";
+import { HTML_FILE } from "../../util/constants";
+import { ConsoleExecutionContext } from "./consoleContext";
+import { HtmlFileExecutionContext } from "./htmlContext";
 
 export function createContext(context: string) {
-  console.log(`Results will be displayed in ${context}`);
+
+  if(context === HTML_FILE) {
+    return new HtmlFileExecutionContext();
+  }
   return new ConsoleExecutionContext();
 }

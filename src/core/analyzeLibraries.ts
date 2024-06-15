@@ -11,7 +11,8 @@ async function analyzeLibraries(libraries: Library[], language: string, context:
   const ctx = createContext(context);
   const executor = new EvaluationExecutor(indicatorRegistry, libraries, builderDir, ctx);
   await executor.analyzeLibraries();
-  executor.showResults();
+  await executor.showResults();
+  console.log("Analysis completed \u263A");
 }
 
 export async function analyzeOneLibrary(language: string, context: string, lib: string, version?: string) {
@@ -22,7 +23,6 @@ export async function analyzeOneLibrary(language: string, context: string, lib: 
   };
 
   await analyzeLibraries([library], language, context);
-  console.log(library);
 }
 
 export async function analyzeAllDeps(language: string, context: string) {

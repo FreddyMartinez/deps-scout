@@ -7,11 +7,7 @@ import {
 } from "../../util/utilityFunctions";
 import { ResultsStore } from "../executor/resultsStore";
 import { IndicatorStatus } from "../indicators/indicators.types";
-
-export interface ExecutionContext {
-  showResults: (results: ResultsStore) => void;
-  showError: (error: unknown) => void;
-}
+import { ExecutionContext } from "./context";
 
 export class ConsoleExecutionContext implements ExecutionContext {
   printConsoleIndicatorResult(results: ResultsStore, indicatorName: string) {
@@ -25,7 +21,13 @@ export class ConsoleExecutionContext implements ExecutionContext {
     }
   }
 
-  showResults(results: ResultsStore) {
+  showResults(results: Map<string, ResultsStore>) {
+    for (const result of results.values()) {
+      this.showIndicatorResults(result);
+    }
+  }
+
+  private showIndicatorResults(results: ResultsStore) {
     printTitle(`Analysis result for library: ${results.library.name}`);
     for (const indicator of results.keys) {
       this.printConsoleIndicatorResult(results, indicator);

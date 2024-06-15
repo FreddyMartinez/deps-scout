@@ -20,6 +20,7 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module",
   },
+  ignores: ["dist/*"],
   plugins: ["@typescript-eslint"],
   rules: {
     semi: ["warn"],

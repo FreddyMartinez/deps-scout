@@ -1,7 +1,7 @@
 import { BuilderDirector } from "../../models/builderDirector";
 import { LibSourceStatus } from "../../models/libParam";
 import { Library } from "../../models/library";
-import { ExecutionContext } from "../ctx/executionContext";
+import { ExecutionContext } from "../ctx/context";
 import { IndicatorsRegistry } from "../registry/registry";
 import { ResultsStore } from "./resultsStore";
 
@@ -30,10 +30,8 @@ export class EvaluationExecutor {
     );
   }
 
-  showResults() {
-    for (const result of this.results.values()) {
-      this.ctx.showResults(result);
-    }
+  async showResults() {
+    await this.ctx.showResults(this.results, this.registry.desiredIndicators);
   }
 
   async evaluateIndicators(library: Library) {

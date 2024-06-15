@@ -14,6 +14,9 @@ const libNotFrequentlyUpdated = "The library is not released frequently.";
 export const timeBetweenReleasesMessage = (timeBetweenReleases: number) =>
   `${libNotFrequentlyUpdated} Average time between releases is ${timeBetweenReleases} days`;
 
+export const CONSOLE = "console";
+export const HTML_FILE = "html";
+
 export const questions = {
   language: {
     type: "list",
@@ -25,6 +28,6 @@ export const questions = {
     type: "list",
     name: "context",
     message: "How would you like to get the results?",
-    choices: ["console", "html"],
+    choices: [CONSOLE, HTML_FILE],
   },
 };
