@@ -2,9 +2,10 @@ import { readFileAsync } from "../../util/readFileAsync";
 import {
   IS_DOWNLOADED_FREQUENTLY,
   IS_LAST_VERSION,
+  IS_LONG_LIVING_PROJECT,
   IS_RELEASED_FREQUENTLY,
   IS_SAME_MAJOR_VERSION,
-  IS_SAME_MINOR_VERSION,
+  REPO_HEALTH,
   WAS_RELEASED_RECENTLY,
 } from "../indicators/constants";
 import { ScoutConfig } from "./config.types";
@@ -13,10 +14,11 @@ const defaultConfig: ScoutConfig = {
   indicators: [
     IS_LAST_VERSION,
     IS_SAME_MAJOR_VERSION,
-    IS_SAME_MINOR_VERSION,
     WAS_RELEASED_RECENTLY,
     IS_RELEASED_FREQUENTLY,
     IS_DOWNLOADED_FREQUENTLY,
+    IS_LONG_LIVING_PROJECT,
+    REPO_HEALTH,
   ],
 };
 
