@@ -15,7 +15,7 @@ const printWithColor =
 
 export const printTitle = printWithColor("1m", "\n\u25ce");
 export const printRed = printWithColor("31m", "\u26D2", true);
-export const printGreen = printWithColor("32m", "\u2714");
+export const printGreen = printWithColor("32m");
 export const printYellow = printWithColor("33m", "\u26A0", true);
 export const printBlue = printWithColor("34m", "\u1367");
 export const printPurple = printWithColor("35m", "\u29B8", true);

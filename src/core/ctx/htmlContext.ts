@@ -30,7 +30,9 @@ export class HtmlFileExecutionContext implements ExecutionContext {
     for (const indicator of this.evaluatedIndicators) {
       row += this.createIndicatorCell(results, indicator);
     }
-    row += `<td>${results.evaluationStopReason || " - "}</td>`;
+    row += results.evaluationStopReason
+      ? `<td>${results.evaluationStopReason}</td>`
+      : "<td class='not-stopped'> - </td>";
 
     return row;
   }
@@ -55,5 +57,6 @@ export class HtmlFileExecutionContext implements ExecutionContext {
       .join("");
     const html = baseHtml(indicators.concat("<th>Stop reason</th>"), results);
     await writeFile("scout-results.html", html);
+    console.log("\nResults saved in scout-results.html");
   }
 }

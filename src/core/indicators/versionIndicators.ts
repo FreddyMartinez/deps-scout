@@ -20,8 +20,7 @@ class SameVersionIndicator implements Indicator {
       value: { score: 1, message: this.message },
     };
   }
-  message =
-    "The used version is not the latest released version of the library.";
+  message = "The used version is not the latest.";
 }
 
 class SameMajorVersionIndicator implements Indicator {
@@ -58,8 +57,8 @@ class SameMinorVersion implements Indicator {
     { metricName: IS_LAST_VERSION, status: IndicatorStatus.WARNING },
     { metricName: IS_SAME_MAJOR_VERSION, status: IndicatorStatus.OK },
   ];
-  message =
-    "The minor version of the used library is different from the latest version.";
+  message = (used: string, latest: string) =>
+    `Used minor version is ${used}, but latest version is ${latest}.`;
 
   evaluate(library: Library) {
     const latestSemVer = library.lastVersion.split(".");
@@ -71,7 +70,7 @@ class SameMinorVersion implements Indicator {
     const score = status === IndicatorStatus.OK ? 1 : 0.5;
     return {
       status,
-      value: { score, message: this.message },
+      value: { score, message: this.message(currentSemVer[1], latestSemVer[1]) },
     };
   }
 }

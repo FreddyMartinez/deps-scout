@@ -25,7 +25,7 @@ async function scanDeps() {
    */
   if (lang !== "javascript") {
     console.log(
-      `Sorry, only javascript is supported at the moment \u2639, ${lang} support is on the way.`
+      `Sorry, only javascript is supported at the moment \u2639 , ${lang} support is on the way.`
     );
     return;
   }

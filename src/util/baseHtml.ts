@@ -19,17 +19,24 @@ export const baseHtml = (indicators: string, results: string) => `
     <style>
       body {
         padding: 1rem;
+        font-family: sans-serif;
       }
       table {
         width: 100%;
         border-collapse: collapse;
+        border: 1px solid black;
       }
 
       th,
       td {
-        border: 1px solid black;
+        border-left: 1px solid #999;
+        border-top: 1px solid black;
         padding: 5px;
         text-align: left;
+      }
+
+      th:first-child, td:first-child {
+        border-left: inherit;
       }
 
       th {
@@ -37,7 +44,8 @@ export const baseHtml = (indicators: string, results: string) => `
       }
 
       td.ok {
-        background-color: #9ff1b2;
+        background-color: #bfb;
+        text-align: center;
       }
       
       td.warning {
@@ -50,6 +58,11 @@ export const baseHtml = (indicators: string, results: string) => `
 
       td.not-evaluated {
         background-color: #c0c0c0;
+        text-align: center;
+      }
+
+      td.not-stopped {
+        text-align: center;
       }
     </style>
   </body>

@@ -4,15 +4,19 @@ import { EvaluationExecutor } from "./executor/executor";
 import { createBuilderDirector } from "../models/builderDirector.builder";
 import { getProjectDeps } from "./getProjectDeps";
 import { createContext } from "./ctx/context.builder";
+import { spinner } from "../util/spinner";
+import { printGreen } from "../util/utilityFunctions";
 
 async function analyzeLibraries(libraries: Library[], language: string, context: string) {
+  const timeout = spinner();
   const indicatorRegistry = await buildRegistry();
   const builderDir = createBuilderDirector(language);
   const ctx = createContext(context);
   const executor = new EvaluationExecutor(indicatorRegistry, libraries, builderDir, ctx);
   await executor.analyzeLibraries();
+  clearInterval(timeout);
   await executor.showResults();
-  console.log("Analysis completed \u263A");
+  printGreen("\nAnalysis completed \u2714");
 }
 
 export async function analyzeOneLibrary(language: string, context: string, lib: string, version?: string) {
