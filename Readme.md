@@ -7,8 +7,13 @@ It can be used to gather information about a specific library or the entire list
 
 ## Usage
 
-To use the Dependency Scout, you first have to install it globally using the `npm i -g deps-scout` command. 
-Then, just run the `scout` command in your project's root directory to analyze all it's dependencies. 
+To use the Dependencies Scout, the easiest way is install it globally, using
+```
+npm i -g deps-scout
+```
+
+Then, just run the `scout` command in your project's root directory to analyze all it's dependencies.
+
 If you want to check a single library just use `scout <library> <version>`.
 Alternativelly, you can run the package usign `npx deps-scout` command.
 
