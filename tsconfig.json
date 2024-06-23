@@ -5,6 +5,7 @@
     "outDir": "dist",
     "rootDir": "src",
     "moduleResolution": "NodeNext",
+    "esModuleInterop": true,
     "useUnknownInCatchVariables": true,
     "resolveJsonModule": true
   },

@@ -16,7 +16,7 @@ export class IndicatorsRegistry {
     this.indicators.set(indicator.name, indicator);
   }
 
-  setIndicatorsToEvaluate(indicators: string[]) {
+  setIndicatorsToEvaluate(indicators?: string[]) {
     if (!indicators || indicators.length === 0) {
       this.indicatorsToEvaluate = Array.from(this.indicators.keys());
       return;

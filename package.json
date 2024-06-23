@@ -5,6 +5,7 @@
   "main": "bin/scout",
   "scripts": {
     "test": "jest --coverage",
+    "dev": "jest --watchAll",
     "build": "tsc"
   },
   "bin": {

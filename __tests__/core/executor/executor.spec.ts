@@ -22,7 +22,8 @@ describe("executor", () => {
     const registry = new IndicatorsRegistry();
     registry.setIndicatorsToEvaluate(["indicator-test"]);
     const builderDir = new BuilderDirector();
-    return new EvaluationExecutor(registry, libraries, builderDir);
+    const ctx = { showResults: jest.fn(), showError: jest.fn() };
+    return new EvaluationExecutor(registry, libraries, builderDir, ctx);
   };
 
   it("should call the getter for desired indicators in the registry", async () => {
@@ -43,7 +44,7 @@ describe("executor", () => {
     const executor = createExecutor();
     const results: ResultsStore = new ResultsStore(libraries[0]);
     executor.results.set("test", results);
-    const spy = jest.spyOn(executor.ctx, "showResults");
+    const spy = executor.ctx.showResults;
     executor.showResults();
     expect(spy).toHaveBeenCalled();
   });

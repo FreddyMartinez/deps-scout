@@ -156,7 +156,7 @@ describe("registry", () => {
       IndicatorStatus.OK,
       resultsStore
     );
-    expect(res).toBe(false);
+    expect(res.stop).toBe(false);
 
     const alertResult = {
       ...indicatorResult,
@@ -169,7 +169,8 @@ describe("registry", () => {
       alertResult.status,
       resultsStore
     );
-    expect(result).toBe(true);
+    expect(result.stop).toBe(true);
+    expect(result.condition).toBe("maxAlerts");
 
     stopConditions = { shallNotAlert: ["indicatorName"] };
     registry.setStopConditions(stopConditions);
@@ -178,7 +179,8 @@ describe("registry", () => {
       IndicatorStatus.ALERT,
       resultsStore
     );
-    expect(result2).toBe(true);
+    expect(result2.stop).toBe(true);
+    expect(result2.condition).toBe("shallNotAlert");
 
     stopConditions = { mustBeOk: ["indicatorName"] };
     registry.setStopConditions(stopConditions);
@@ -187,6 +189,7 @@ describe("registry", () => {
       IndicatorStatus.WARNING,
       resultsStore
     );
-    expect(result3).toBe(true);
+    expect(result3.stop).toBe(true);
+    expect(result3.condition).toBe("Indicator indicatorName must be ok");
   });
 });
