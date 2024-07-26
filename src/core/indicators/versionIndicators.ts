@@ -11,24 +11,30 @@ class SameVersionIndicator implements Indicator {
   parameters: Array<keyof Library> = ["lastVersion", "usedVersion"];
 
   evaluate(library: Library) {
+    const latestSemVer = library.lastVersion.split(".");
+    const usedSemVer = library.usedVersion.split(".");
     const status =
       library.lastVersion === library.usedVersion
         ? IndicatorStatus.OK
-        : IndicatorStatus.WARNING;
+        : latestSemVer[0] === usedSemVer[0]
+        ? IndicatorStatus.WARNING
+        : IndicatorStatus.ALERT;
     return {
       status,
-      value: { score: 1, message: this.message },
+      value: {
+        score: 1,
+        message: this.message(library.usedVersion, library.lastVersion),
+      },
     };
   }
-  message = "The used version is not the latest.";
+  message = (used: string, latest: string) =>
+    `The used version is ${used}, but the latest version of the library is ${latest}.`;
 }
 
 class SameMajorVersionIndicator implements Indicator {
   name = IS_SAME_MAJOR_VERSION;
   parameters: Array<keyof Library> = ["lastVersion", "usedVersion"];
-  preconditions = [
-    { metricName: IS_LAST_VERSION, status: IndicatorStatus.WARNING },
-  ];
+
   message = (used: string, latest: string) =>
     `The used major version is ${used}, but the latest version of the library is ${latest}.`;
 
@@ -53,10 +59,7 @@ class SameMajorVersionIndicator implements Indicator {
 class SameMinorVersion implements Indicator {
   name = IS_SAME_MINOR_VERSION;
   parameters: Array<keyof Library> = ["lastVersion", "usedVersion"];
-  preconditions = [
-    { metricName: IS_LAST_VERSION, status: IndicatorStatus.WARNING },
-    { metricName: IS_SAME_MAJOR_VERSION, status: IndicatorStatus.OK },
-  ];
+
   message = (used: string, latest: string) =>
     `Used minor version is ${used}, but latest version is ${latest}.`;
 
@@ -70,7 +73,10 @@ class SameMinorVersion implements Indicator {
     const score = status === IndicatorStatus.OK ? 1 : 0.5;
     return {
       status,
-      value: { score, message: this.message(currentSemVer[1], latestSemVer[1]) },
+      value: {
+        score,
+        message: this.message(currentSemVer[1], latestSemVer[1]),
+      },
     };
   }
 }
