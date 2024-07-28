@@ -1,33 +1,45 @@
 import { BuilderDirector } from "./builderDirector";
-import { GITHUB, GITHUB_COMUNITY, NPM, NPM_DOWNLOADS } from "./libParam";
+import { GITHUB, GITHUB_COMUNITY, NPM, NPM_DOWNLOADS, Source } from "./libParam";
+import { Library } from "./library";
 import {
   GithubBuilder,
   GithubCommunityBuilder,
+  LibraryBuilder,
   NpmBuilder,
   NpmDownloadsBuilder,
 } from "./libraryBuilder";
 
 function createJavascriptBuilder() {
-  const jsbuilder = new BuilderDirector();
-  jsbuilder.addBuilder(NPM, new NpmBuilder());
-  jsbuilder.addBuilder(NPM_DOWNLOADS, new NpmDownloadsBuilder());
-  jsbuilder.addBuilder(GITHUB, new GithubBuilder());
-  jsbuilder.addBuilder(GITHUB_COMUNITY, new GithubCommunityBuilder());
-  jsbuilder.addParam("repoName", NPM);
-  jsbuilder.addParam("repoOwner", NPM);
-  jsbuilder.addParam("numberOfVersions", NPM);
-  jsbuilder.addParam("weeklyDownloads", NPM_DOWNLOADS);
-  jsbuilder.addParam("lastVersion", NPM);
-  jsbuilder.addParam("lastVersionDate", NPM);
-  jsbuilder.addParam("lifeSpan", NPM);
-  jsbuilder.addParam("releaseFrequency", NPM);
-  jsbuilder.addParam("repoOpenIssues", GITHUB);
-  jsbuilder.addParam("repoStars", GITHUB);
-  jsbuilder.addParam("repoForks", GITHUB);
-  jsbuilder.addParam("repoObservers", GITHUB);
-  jsbuilder.addParam("repoOwnerType", GITHUB);
-  jsbuilder.addParam("repoHealth", GITHUB_COMUNITY);
-  return jsbuilder;
+  const jsParams = new Map<keyof Library, Source>();
+  jsParams.set("repoName", NPM);
+  jsParams.set("repoOwner", NPM);
+  jsParams.set("numberOfVersions", NPM);
+  jsParams.set("weeklyDownloads", NPM_DOWNLOADS);
+  jsParams.set("lastVersion", NPM);
+  jsParams.set("lastVersionDate", NPM);
+  jsParams.set("lifeSpan", NPM);
+  jsParams.set("releaseFrequency", NPM);
+  jsParams.set("repoOpenIssues", GITHUB);
+  jsParams.set("repoStars", GITHUB);
+  jsParams.set("repoForks", GITHUB);
+  jsParams.set("repoObservers", GITHUB);
+  jsParams.set("repoOwnerType", GITHUB);
+  jsParams.set("repoHealth", GITHUB_COMUNITY);
+  const jsBuilders = new Map<Source, LibraryBuilder>();
+  jsBuilders.set(NPM, new NpmBuilder());
+  jsBuilders.set(NPM_DOWNLOADS, new NpmDownloadsBuilder());
+  jsBuilders.set(GITHUB, new GithubBuilder());
+  jsBuilders.set(GITHUB_COMUNITY, new GithubCommunityBuilder());
+
+  return new BuilderDirector(jsParams, jsBuilders);
+}
+
+function createJavaBuilder() {
+  const javaParams = new Map<keyof Library, Source>();
+  /* @TODO: Map labrary attributes to data sources */
+  const javaBuilders = new Map<Source, LibraryBuilder>();
+  /* @TODO: Implement Java builders and add to map */
+  return new BuilderDirector(javaParams, javaBuilders);
 }
 
 export function createBuilderDirector(language: string) {
@@ -35,8 +47,7 @@ export function createBuilderDirector(language: string) {
     return createJavascriptBuilder();
   }
   if (language === "java") {
-    /* @TODO: Implement Java builder */
-    return new BuilderDirector();
+    return createJavaBuilder();
   }
   throw new Error(`Language ${language} not supported`);
 }
