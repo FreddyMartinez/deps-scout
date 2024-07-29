@@ -3,7 +3,7 @@ import { buildRegistry } from "./registry/registryBuilder";
 import { EvaluationExecutor } from "./executor/executor";
 import { createBuilderDirector } from "../models/builderDirector.builder";
 import { getProjectDeps } from "./getProjectDeps";
-import { createContext } from "./ctx/context.builder";
+import { createContext } from "../ctx/context.builder";
 import { spinner } from "../util/spinner";
 import { printGreen } from "../util/utilityFunctions";
 
@@ -31,8 +31,7 @@ export async function analyzeOneLibrary(language: string, context: string, lib: 
 
 export async function analyzeAllDeps(language: string, context: string) {
   try {
-    // refactor this to support different languages and registries
-    const dependencies = await getProjectDeps();
+    const dependencies = await getProjectDeps(language);
     const libNames = Object.keys(dependencies);
     const libInstances: Library[] = libNames.map((lib) => ({
       name: lib,

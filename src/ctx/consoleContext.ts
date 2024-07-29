@@ -4,9 +4,9 @@ import {
   printPurple,
   printRed,
   printYellow,
-} from "../../util/utilityFunctions";
-import { ResultsStore } from "../executor/resultsStore";
-import { IndicatorStatus } from "../indicators/indicators.types";
+} from "../util/utilityFunctions";
+import { ResultsStore } from "../core/executor/resultsStore";
+import { IndicatorStatus } from "../core/indicators/indicators.types";
 import { ExecutionContext } from "./context";
 
 export class ConsoleExecutionContext implements ExecutionContext {

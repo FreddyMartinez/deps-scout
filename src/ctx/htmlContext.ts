@@ -1,9 +1,9 @@
 import { writeFile } from "fs/promises";
-import { printRed } from "../../util/utilityFunctions";
-import { ResultsStore } from "../executor/resultsStore";
-import { IndicatorStatus } from "../indicators/indicators.types";
+import { printRed } from "../util/utilityFunctions";
+import { ResultsStore } from "../core/executor/resultsStore";
+import { IndicatorStatus } from "../core/indicators/indicators.types";
 import { ExecutionContext } from "./context";
-import { baseHtml } from "../../util/baseHtml";
+import { baseHtml } from "../util/baseHtml";
 
 export class HtmlFileExecutionContext implements ExecutionContext {
   evaluatedIndicators: Array<string>;

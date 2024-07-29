@@ -2,10 +2,19 @@ import { readFileAsync } from "../util/readFileAsync";
 
 /**
  * Returns the dependencies and their versions
- * @TODO: add support for different languages
  * @returns a record with the dependencies of the project
  */
-export async function getProjectDeps() {
+export async function getProjectDeps(language: string) {
+  if (language === "javascript") {
+    return await getJavascritDeps();
+  }
+  if (language === "java") {
+    /** @TODO: add function to read Java deps */
+  }
+  throw new Error(`Language ${language} not supported`);
+}
+
+async function getJavascritDeps() {
   const packageJson = await readFileAsync("./package.json", "utf8");
   const parsedPackageJson = JSON.parse(packageJson);
   const allDeps = {
@@ -17,4 +26,3 @@ export async function getProjectDeps() {
   }
   return allDeps;
 }
-

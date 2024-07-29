@@ -1,4 +1,4 @@
-import { ResultsStore } from "../executor/resultsStore";
+import { ResultsStore } from "../core/executor/resultsStore";
 
 export interface ExecutionContext {
   showResults: (results: Map<string, ResultsStore>, indicators?: string[]) => void | Promise<void>;

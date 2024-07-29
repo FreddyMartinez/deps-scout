@@ -1,4 +1,4 @@
-import { HTML_FILE } from "../../util/constants";
+import { HTML_FILE } from "../util/constants";
 import { ConsoleExecutionContext } from "./consoleContext";
 import { HtmlFileExecutionContext } from "./htmlContext";
 
